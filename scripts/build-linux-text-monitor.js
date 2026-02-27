@@ -113,7 +113,10 @@ function getPkgConfigFlags() {
     });
     if (check.status !== 0) return null;
 
-    const result = spawnSync("pkg-config", ["--cflags", "--libs", "atspi-2"], {
+    // Explicitly request gobject-2.0: on Ubuntu/Debian, atspi-2.pc does not
+    // pull in -lgobject-2.0 transitively (unlike Fedora), causing undefined
+    // reference to g_object_unref at link time.
+    const result = spawnSync("pkg-config", ["--cflags", "--libs", "atspi-2", "gobject-2.0"], {
       stdio: ["pipe", "pipe", "pipe"],
       env: process.env,
     });
