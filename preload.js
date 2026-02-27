@@ -148,6 +148,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
   readClipboard: () => ipcRenderer.invoke("read-clipboard"),
   writeClipboard: (text) => ipcRenderer.invoke("write-clipboard", text),
   checkPasteTools: () => ipcRenderer.invoke("check-paste-tools"),
+  runYdotoolSetup: () => ipcRenderer.invoke("run-ydotool-setup"),
 
   // Local Whisper functions (whisper.cpp)
   transcribeLocalWhisper: (audioBlob, options) =>

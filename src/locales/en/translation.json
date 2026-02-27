@@ -158,7 +158,12 @@
       "accessibilityDescription": "To paste text into apps",
       "testAndGrant": "Test & Grant",
       "requiredForApp": "Required for OpenWhispr to work",
-      "microphoneRequired": "Microphone access required"
+      "microphoneRequired": "Microphone access required",
+      "ydotoolSetupDescription": "ydotool needs additional system configuration for Wayland paste support.",
+      "ydotoolSetupButton": "Configure ydotool",
+      "ydotoolSetupRunning": "Configuring...",
+      "ydotoolSetupSuccess": "ydotool configured. Please log out and back in for full effect.",
+      "ydotoolSetupErrorTitle": "Setup Error"
     },
     "transcription": {
       "title": "Transcription Setup",

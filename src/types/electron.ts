@@ -216,6 +216,7 @@ export interface PasteToolsResult {
   hasUinput?: boolean;
   tools?: string[];
   recommendedInstall?: string;
+  ydotoolNeedsSetup?: boolean;
 }
 
 export type GpuBackend = "vulkan" | "cpu" | "metal" | null;
@@ -406,6 +407,7 @@ declare global {
       readClipboard: () => Promise<string>;
       writeClipboard: (text: string) => Promise<{ success: boolean }>;
       checkPasteTools: () => Promise<PasteToolsResult>;
+      runYdotoolSetup: () => Promise<{ success: boolean; error?: string }>;
 
       // Audio
       onNoAudioDetected: (callback: (event: any, data?: any) => void) => () => void;

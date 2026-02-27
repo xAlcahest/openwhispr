@@ -650,6 +650,55 @@ class IPCHandlers {
       return this.clipboardManager.checkPasteTools();
     });
 
+    ipcMain.handle("run-ydotool-setup", async () => {
+      if (process.platform !== "linux") {
+        return { success: false, error: "Not Linux" };
+      }
+
+      const { execSync, spawnSync } = require("child_process");
+
+      // Find the bundled after-install.sh script
+      const path = require("path");
+      const fs = require("fs");
+      const candidates = [
+        path.join(process.resourcesPath, "resources", "linux", "after-install.sh"),
+        path.join(process.resourcesPath, "linux", "after-install.sh"),
+        path.join(__dirname, "..", "resources", "linux", "after-install.sh"),
+      ];
+      const scriptPath = candidates.find((p) => {
+        try { return fs.existsSync(p); } catch { return false; }
+      });
+
+      if (!scriptPath) {
+        return { success: false, error: "Setup script not found" };
+      }
+
+      // Check if pkexec is available
+      try {
+        execSync("which pkexec", { timeout: 2000 });
+      } catch {
+        return { success: false, error: "pkexec not available" };
+      }
+
+      try {
+        const result = spawnSync("pkexec", ["sh", scriptPath], {
+          timeout: 60000,
+          env: { ...process.env, SUDO_USER: process.env.USER || process.env.LOGNAME || "" },
+        });
+        if (result.status === 0) {
+          return { success: true };
+        } else if (result.status === 126) {
+          // User dismissed the pkexec auth dialog
+          return { success: false, error: "dismissed" };
+        } else {
+          const stderr = result.stderr ? result.stderr.toString().trim() : "";
+          return { success: false, error: stderr || `Exit code ${result.status}` };
+        }
+      } catch (err) {
+        return { success: false, error: err.message };
+      }
+    });
+
     ipcMain.handle("transcribe-local-whisper", async (event, audioBlob, options = {}) => {
       debugLogger.log("transcribe-local-whisper called", {
         audioBlobType: typeof audioBlob,

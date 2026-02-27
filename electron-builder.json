@@ -90,6 +90,7 @@
     "resources/bin/macos-text-monitor",
     "resources/bin/linux-fast-paste",
     "resources/bin/linux-text-monitor",
+    "resources/linux/after-install.sh",
     {
       "from": "resources/bin/",
       "to": "bin/",
@@ -159,8 +160,11 @@
     ]
   },
   "deb": {
+    "afterInstall": "resources/linux/after-install.sh",
     "afterRemove": "resources/linux/after-remove.sh",
     "fpm": [
+      "--deb-suggests",
+      "ydotool",
       "--deb-suggests",
       "xdotool",
       "--deb-suggests",
@@ -170,7 +174,10 @@
     ]
   },
   "rpm": {
+    "afterInstall": "resources/linux/after-install.sh",
     "fpm": [
+      "--rpm-tag",
+      "Suggests: ydotool",
       "--rpm-tag",
       "Suggests: xdotool",
       "--rpm-tag",

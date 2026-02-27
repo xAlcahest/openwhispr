@@ -255,6 +255,55 @@ class ClipboardManager {
     return accessible;
   }
 
+  // Detect ydotool major version: 0 (Debian/Ubuntu 0.1.x) or 1 (Fedora/Arch 1.0.x)
+  // Cached for the lifetime of the process since version doesn't change at runtime.
+  _getYdotoolMajorVersion() {
+    if (this._ydotoolVersionCache !== undefined) return this._ydotoolVersionCache;
+
+    let version = null;
+    try {
+      // Try dpkg first (Debian/Ubuntu)
+      let result = spawnSync("dpkg-query", ["-W", "-f", "${Version}", "ydotool"], { timeout: 2000 });
+      if (result.status === 0 && result.stdout) {
+        version = result.stdout.toString().trim();
+      }
+      // Try rpm (Fedora/openSUSE)
+      if (!version) {
+        result = spawnSync("rpm", ["-q", "--queryformat", "%{VERSION}", "ydotool"], { timeout: 2000 });
+        if (result.status === 0 && result.stdout) {
+          version = result.stdout.toString().trim();
+        }
+      }
+      // Try pacman (Arch)
+      if (!version) {
+        result = spawnSync("pacman", ["-Q", "ydotool"], { timeout: 2000 });
+        if (result.status === 0 && result.stdout) {
+          version = result.stdout.toString().trim().split(/\s+/)[1] || null;
+        }
+      }
+    } catch {}
+
+    const major = version && version.startsWith("0") ? 0 : 1;
+    this._ydotoolVersionCache = major;
+    debugLogger.info("ydotool version detected", { rawVersion: version, major }, "clipboard");
+    return major;
+  }
+
+  // Returns ydotool args for paste, adapting to the installed version.
+  // 0.1.x: key names ("ctrl+v", "ctrl+shift+v")
+  // 1.0.x: raw keycodes ("29:1 47:1 47:0 29:0")
+  _getYdotoolPasteArgs(inTerminal) {
+    const major = this._getYdotoolMajorVersion();
+    if (major === 0) {
+      // ydotool 0.1.x — uses key name syntax
+      return inTerminal ? ["key", "ctrl+shift+v"] : ["key", "ctrl+v"];
+    }
+    // ydotool 1.0.x — uses raw keycodes (29=Ctrl, 42=Shift, 47=V)
+    return inTerminal
+      ? ["key", "29:1", "42:1", "47:1", "47:0", "42:0", "29:0"]
+      : ["key", "29:1", "47:1", "47:0", "29:0"];
+  }
+
   _detectKdeWindowClass() {
     if (this.commandExists("kdotool")) {
       try {
@@ -877,6 +926,63 @@ class ClipboardManager {
       }
     }
 
+    // KDE Wayland: prioritize ydotool to avoid xdg-desktop-portal Remote Desktop popups (#285)
+    if (isKde && isWayland && ydotoolDaemonRunning) {
+      const earlyIsTerminal = detectedWindowClass
+        ? terminalClasses.some((t) => detectedWindowClass.includes(t))
+        : false;
+      // Adapts to ydotool version: 0.1.x uses key names, 1.0.x uses raw keycodes
+      const ydotoolPasteArgs = this._getYdotoolPasteArgs(earlyIsTerminal);
+
+      try {
+        await new Promise((resolve, reject) => {
+          const proc = spawn("ydotool", ydotoolPasteArgs);
+          let stderr = "";
+          proc.stderr?.on("data", (data) => {
+            stderr += data.toString();
+          });
+
+          let timedOut = false;
+          const timeoutId = setTimeout(() => {
+            timedOut = true;
+            killProcess(proc, "SIGKILL");
+          }, 2000);
+
+          proc.on("close", (code) => {
+            if (timedOut) return reject(new Error("ydotool timed out"));
+            clearTimeout(timeoutId);
+            if (code === 0) resolve();
+            else
+              reject(
+                new Error(
+                  `ydotool exited with code ${code}${stderr ? `: ${stderr.trim()}` : ""}`
+                )
+              );
+          });
+
+          proc.on("error", (error) => {
+            if (timedOut) return;
+            clearTimeout(timeoutId);
+            reject(error);
+          });
+        });
+        this.safeLog("✅ Paste successful using ydotool (KDE Wayland priority)");
+        debugLogger.info(
+          "Paste successful",
+          { tool: "ydotool", method: "kde-wayland-priority" },
+          "clipboard"
+        );
+        restoreClipboard();
+        return;
+      } catch (ydotoolError) {
+        debugLogger.warn(
+          "KDE Wayland ydotool priority failed, continuing to fallbacks",
+          { error: ydotoolError?.message },
+          "clipboard"
+        );
+      }
+    }
+
     if (linuxFastPaste) {
       const earlyIsTerminal = detectedWindowClass
         ? terminalClasses.some((t) => detectedWindowClass.includes(t))
@@ -1024,11 +1130,8 @@ class ClipboardManager {
       );
     }
 
-    // Raw keycodes work across both ydotool 0.1.x and 1.0.x (key names silently fail on 1.0.x)
-    // 29 = KEY_LEFTCTRL, 42 = KEY_LEFTSHIFT, 47 = KEY_V
-    const ydotoolArgs = inTerminal
-      ? ["key", "29:1", "42:1", "47:1", "47:0", "42:0", "29:0"]
-      : ["key", "29:1", "47:1", "47:0", "29:0"];
+    // Adapts to ydotool version: 0.1.x (Debian/Ubuntu) uses key names, 1.0.x uses raw keycodes
+    const ydotoolArgs = this._getYdotoolPasteArgs(inTerminal);
 
     const wtypeEntry = canUseWtype
       ? [
@@ -1449,8 +1552,10 @@ Would you like to open System Settings now?`;
       if (canUseXdotool && this.commandExists("xdotool")) tools.push("xdotool");
       if (canUseYdotool) tools.push("ydotool");
     } else {
-      if (canUseXdotool && this.commandExists("xdotool")) tools.push("xdotool");
+      // GNOME/KDE Wayland: prioritize ydotool (uinput) over xdotool to avoid
+      // Remote Desktop portal popups on KDE (#285) and silent failures on GNOME (#240)
       if (canUseYdotool) tools.push("ydotool");
+      if (canUseXdotool && this.commandExists("xdotool")) tools.push("xdotool");
       if (canUseWtype && this.commandExists("wtype")) tools.push("wtype");
     }
 
@@ -1464,11 +1569,16 @@ Would you like to open System Settings now?`;
       } else if (isWlroots) {
         recommendedInstall = "wtype";
       } else {
-        recommendedInstall = "xdotool";
+        recommendedInstall = "ydotool";
       }
     } else if (isWayland && hasNativeBinary && !hasUinput && tools.length === 0) {
       recommendedInstall = "usermod -aG input $USER";
     }
+
+    // ydotool is installed but needs setup (daemon not running or uinput inaccessible)
+    const ydotoolExists = this.commandExists("ydotool");
+    const ydotoolDaemonRunning = ydotoolExists && this._isYdotoolDaemonRunning();
+    const ydotoolNeedsSetup = isWayland && !isWlroots && ydotoolExists && (!ydotoolDaemonRunning || !hasUinput);
 
     return {
       platform: "linux",
@@ -1487,6 +1597,7 @@ Would you like to open System Settings now?`;
       hasUinput,
       tools,
       recommendedInstall,
+      ydotoolNeedsSetup,
     };
   }
 }

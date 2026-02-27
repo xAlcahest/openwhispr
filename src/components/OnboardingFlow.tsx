@@ -100,6 +100,8 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   const [pendingVerificationEmail, setPendingVerificationEmail] = useState<string | null>(null);
   const [isModelDownloaded, setIsModelDownloaded] = useState(false);
   const [isUsingGnomeHotkeys, setIsUsingGnomeHotkeys] = useState(false);
+  const [ydotoolSetupRunning, setYdotoolSetupRunning] = useState(false);
+  const [ydotoolSetupDone, setYdotoolSetupDone] = useState(false);
   const readableHotkey = formatHotkeyLabel(hotkey);
   const { alertDialog, confirmDialog, showAlertDialog, hideAlertDialog, hideConfirmDialog } =
     useDialogs();
@@ -123,6 +125,27 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
   const permissionsHook = usePermissions(showAlertDialog);
   useClipboard(showAlertDialog); // Initialize clipboard hook for permission checks
+
+  const handleYdotoolSetup = useCallback(async () => {
+    setYdotoolSetupRunning(true);
+    try {
+      const result = await window.electronAPI?.runYdotoolSetup?.();
+      if (result?.success) {
+        setYdotoolSetupDone(true);
+        // Re-check paste tools to update the UI
+        await permissionsHook.checkPasteToolsAvailability();
+      } else if (result?.error && result.error !== "dismissed") {
+        showAlertDialog(
+          t("onboarding.permissions.ydotoolSetupErrorTitle", "Setup Error"),
+          result.error
+        );
+      }
+    } catch {
+      // User may have dismissed pkexec dialog
+    } finally {
+      setYdotoolSetupRunning(false);
+    }
+  }, [permissionsHook, showAlertDialog, t]);
 
   // For signed-in users, merge setup and permissions into one step
   const steps =
@@ -415,6 +438,33 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                       onCheck={permissionsHook.checkPasteToolsAvailability}
                     />
                   )}
+
+                {/* ydotool setup for Wayland (AppImage/tar.gz users) */}
+                {platform === "linux" &&
+                  permissionsHook.pasteToolsInfo?.ydotoolNeedsSetup &&
+                  !ydotoolSetupDone && (
+                    <div className="border border-border rounded-lg p-4 space-y-2">
+                      <p className="text-sm text-muted-foreground">
+                        {t("onboarding.permissions.ydotoolSetupDescription", "ydotool needs additional system configuration for Wayland paste support.")}
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleYdotoolSetup}
+                        disabled={ydotoolSetupRunning}
+                      >
+                        {ydotoolSetupRunning
+                          ? t("onboarding.permissions.ydotoolSetupRunning", "Configuring...")
+                          : t("onboarding.permissions.ydotoolSetupButton", "Configure ydotool")}
+                      </Button>
+                    </div>
+                  )}
+                {ydotoolSetupDone && (
+                  <div className="flex items-center gap-2 text-sm text-success">
+                    <Check className="w-4 h-4" />
+                    {t("onboarding.permissions.ydotoolSetupSuccess", "ydotool configured. Please log out and back in for full effect.")}
+                  </div>
+                )}
               </div>
             </div>
           );
@@ -558,6 +608,33 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                   onCheck={permissionsHook.checkPasteToolsAvailability}
                 />
               )}
+
+            {/* ydotool setup for Wayland (AppImage/tar.gz users) */}
+            {platform === "linux" &&
+              permissionsHook.pasteToolsInfo?.ydotoolNeedsSetup &&
+              !ydotoolSetupDone && (
+                <div className="border border-border rounded-lg p-4 space-y-2">
+                  <p className="text-sm text-muted-foreground">
+                    {t("onboarding.permissions.ydotoolSetupDescription", "ydotool needs additional system configuration for Wayland paste support.")}
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleYdotoolSetup}
+                    disabled={ydotoolSetupRunning}
+                  >
+                    {ydotoolSetupRunning
+                      ? t("onboarding.permissions.ydotoolSetupRunning", "Configuring...")
+                      : t("onboarding.permissions.ydotoolSetupButton", "Configure ydotool")}
+                  </Button>
+                </div>
+              )}
+            {ydotoolSetupDone && (
+              <div className="flex items-center gap-2 text-sm text-success">
+                <Check className="w-4 h-4" />
+                {t("onboarding.permissions.ydotoolSetupSuccess", "ydotool configured. Please log out and back in for full effect.")}
+              </div>
+            )}
           </div>
         );
 
