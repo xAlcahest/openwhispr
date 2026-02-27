@@ -5,14 +5,19 @@
 
 set +e  # never abort package installation
 
-# --- 1. Check if ydotool is installed (it's a suggested dependency, not required) ---
-if ! command -v ydotool >/dev/null 2>&1; then
-    exit 0
-fi
-
 log() {
     echo "openwhispr-postinst: $*"
 }
+
+# --- 1. Create /usr/bin symlink for terminal launch ---
+if [ -x /opt/OpenWhispr/open-whispr ] && [ ! -e /usr/bin/openwhispr ]; then
+    ln -sf /opt/OpenWhispr/open-whispr /usr/bin/openwhispr 2>/dev/null || log "warning: could not create /usr/bin/openwhispr symlink"
+fi
+
+# --- 2. Check if ydotool is installed (it's a suggested dependency, not required) ---
+if ! command -v ydotool >/dev/null 2>&1; then
+    exit 0
+fi
 
 log "ydotool detected, configuring for Wayland paste support..."
 
