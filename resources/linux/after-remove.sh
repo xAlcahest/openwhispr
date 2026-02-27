@@ -1,6 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 
+# Remove udev rule
+RULES_FILE="/etc/udev/rules.d/60-openwhispr-uinput.rules"
+if [ -f "$RULES_FILE" ]; then
+  rm -f "$RULES_FILE"
+  udevadm control --reload-rules 2>/dev/null || true
+fi
+
+# Remove cached models
 CACHE_DIR="$HOME/.cache/openwhispr"
 MODELS_DIR="$CACHE_DIR/models"
 

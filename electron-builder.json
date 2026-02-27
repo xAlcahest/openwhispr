@@ -175,6 +175,7 @@
   },
   "rpm": {
     "afterInstall": "resources/linux/after-install.sh",
+    "afterRemove": "resources/linux/after-remove.sh",
     "fpm": [
       "--rpm-tag",
       "Suggests: ydotool",

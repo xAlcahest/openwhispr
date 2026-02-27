@@ -1,0 +1,3 @@
+# Allow logged-in users to access /dev/uinput for keyboard input simulation.
+# Used by OpenWhispr's linux-fast-paste for auto-paste on Wayland.
+KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess"
