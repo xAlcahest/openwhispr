@@ -240,6 +240,37 @@ class ClipboardManager {
     }
   }
 
+  _installUinputRule() {
+    if (this._uinputRuleInstallAttempted) return;
+    this._uinputRuleInstallAttempted = true;
+
+    if (!process.env.APPIMAGE) return;
+
+    try {
+      fs.accessSync("/etc/udev/rules.d/60-openwhispr-uinput.rules", fs.constants.F_OK);
+      return;
+    } catch {}
+
+    const ruleSrc = path.join(
+      process.resourcesPath,
+      "resources/linux/60-openwhispr-uinput.rules"
+    );
+    if (!fs.existsSync(ruleSrc)) return;
+
+    debugLogger.info("Installing uinput udev rule via pkexec", {}, "clipboard");
+    const cmd = `cp '${ruleSrc}' /etc/udev/rules.d/60-openwhispr-uinput.rules && udevadm control --reload-rules && udevadm trigger --subsystem-match=misc --attr-match=name=uinput`;
+    const proc = spawn("pkexec", ["/bin/sh", "-c", cmd], { stdio: "ignore" });
+    proc.on("close", (code) => {
+      if (code === 0) {
+        this._uinputCache = null;
+        debugLogger.info("uinput udev rule installed successfully", {}, "clipboard");
+      } else {
+        debugLogger.warn("Failed to install uinput udev rule", { code }, "clipboard");
+      }
+    });
+    proc.on("error", () => {});
+  }
+
   _canAccessUinput() {
     if (process.platform !== "linux") return false;
     const now = Date.now();
@@ -1386,6 +1417,9 @@ Would you like to open System Settings now?`;
   preWarmAccessibility() {
     if (process.platform === "linux") {
       this.resolveLinuxFastPasteBinary();
+      if (this._isWayland() && !this._canAccessUinput()) {
+        this._installUinputRule();
+      }
       return;
     }
     if (process.platform !== "darwin") return;
