@@ -163,6 +163,8 @@
     "afterInstall": "resources/linux/after-install.sh",
     "afterRemove": "resources/linux/after-remove.sh",
     "fpm": [
+      "-d",
+      "libx11-6",
       "--deb-suggests",
       "ydotool",
       "--deb-suggests",
@@ -177,6 +179,12 @@
     "afterInstall": "resources/linux/after-install.sh",
     "afterRemove": "resources/linux/after-remove.sh",
     "fpm": [
+      "-d",
+      "libX11",
+      "-d",
+      "libXtst",
+      "-d",
+      "at-spi2-core",
       "--rpm-tag",
       "Suggests: ydotool",
       "--rpm-tag",
