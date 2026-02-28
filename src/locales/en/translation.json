@@ -1563,6 +1563,9 @@
         "title": "Hotkey unavailable",
         "description": "The selected hotkey could not be registered. Please choose a different one in settings."
       },
+      "hotkeyWaylandLimitation": {
+        "title": "Hotkey may not work"
+      },
       "addedToDict": "Added {{words}} to your dictionary",
       "undo": "Undo"
     },
@@ -1570,7 +1573,8 @@
       "hotkeyToSpeak": "Press {{hotkey}} to speak",
       "recording": "Recording...",
       "processing": "Processing...",
-      "clickToSpeak": "Click to speak"
+      "clickToSpeak": "Click to speak",
+      "dragToMove": "Drag to move"
     },
     "buttons": {
       "cancelRecording": "Cancel recording",

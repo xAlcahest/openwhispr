@@ -21,6 +21,8 @@ const isGnomeDesktop = (desktopEnv) => desktopEnv.includes("gnome");
 
 const isKdeDesktop = (desktopEnv) => desktopEnv.includes("kde");
 
+const isCosmicDesktop = (desktopEnv) => desktopEnv.includes("cosmic");
+
 const isWlrootsCompositor = (desktopEnv) => {
   const wlrootsDesktops = ["sway", "hyprland", "wayfire", "river", "dwl", "labwc", "cage"];
   return (
@@ -39,8 +41,9 @@ const getLinuxSessionInfo = () => {
   const isGnome = isWayland && isGnomeDesktop(desktopEnv);
   const isKde = isWayland && isKdeDesktop(desktopEnv);
   const isWlroots = isWayland && isWlrootsCompositor(desktopEnv);
+  const isCosmic = isWayland && isCosmicDesktop(desktopEnv);
 
-  return { isWayland, xwaylandAvailable, desktopEnv, isGnome, isKde, isWlroots };
+  return { isWayland, xwaylandAvailable, desktopEnv, isGnome, isKde, isWlroots, isCosmic };
 };
 
 const PASTE_DELAYS = {
@@ -776,7 +779,7 @@ class ClipboardManager {
   }
 
   async pasteLinux(originalClipboard, options = {}) {
-    const { isWayland, xwaylandAvailable, isGnome, isKde, isWlroots } = getLinuxSessionInfo();
+    const { isWayland, xwaylandAvailable, isGnome, isKde, isWlroots, isCosmic } = getLinuxSessionInfo();
     const webContents = options.webContents;
     const xdotoolExists = this.commandExists("xdotool");
     const wtypeExists = this.commandExists("wtype");
@@ -792,6 +795,7 @@ class ClipboardManager {
         isGnome,
         isKde,
         isWlroots,
+        isCosmic,
         linuxFastPaste: !!linuxFastPaste,
         canAccessUinput: this._canAccessUinput(),
         xdotoolExists,
@@ -1238,6 +1242,14 @@ class ClipboardManager {
           errorMsg =
             "Clipboard copied, but paste simulation failed. Please paste manually with Ctrl+V.";
         }
+      } else if (isCosmic) {
+        if (!xdotoolExists && !ydotoolDaemonRunning) {
+          errorMsg =
+            "Clipboard copied, but automatic pasting on COSMIC requires xdotool (recommended) or ydotool. Install with: sudo apt install xdotool wl-clipboard";
+        } else {
+          errorMsg =
+            "Clipboard copied, but paste simulation failed on COSMIC. Please paste manually with Ctrl+V.";
+        }
       } else {
         errorMsg =
           "Clipboard copied, but paste simulation failed on Wayland. Please install xdotool or paste manually with Ctrl+V.";
@@ -1432,7 +1444,7 @@ Would you like to open System Settings now?`;
       };
     }
 
-    const { isWayland, xwaylandAvailable, isGnome, isKde, isWlroots } = getLinuxSessionInfo();
+    const { isWayland, xwaylandAvailable, isGnome, isKde, isWlroots, isCosmic } = getLinuxSessionInfo();
     const linuxFastPaste = this.resolveLinuxFastPasteBinary();
     const hasNativeBinary = !!linuxFastPaste;
 

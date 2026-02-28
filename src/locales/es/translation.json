@@ -1563,6 +1563,9 @@
         "title": "Atajo no disponible",
         "description": "No se pudo registrar el atajo seleccionado. Elige otro en la configuración."
       },
+      "hotkeyWaylandLimitation": {
+        "title": "La tecla rápida podría no funcionar"
+      },
       "addedToDict": "{{words}} añadido a tu diccionario",
       "undo": "Deshacer"
     },
@@ -1570,7 +1573,8 @@
       "hotkeyToSpeak": "Pulsa {{hotkey}} para hablar",
       "recording": "Grabando...",
       "processing": "Procesando...",
-      "clickToSpeak": "Haz clic para hablar"
+      "clickToSpeak": "Haz clic para hablar",
+      "dragToMove": "Arrastra para mover"
     },
     "buttons": {
       "cancelRecording": "Cancelar grabación",

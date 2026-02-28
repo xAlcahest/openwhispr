@@ -1563,6 +1563,9 @@
         "title": "Tastenkombination nicht verfügbar",
         "description": "Die ausgewählte Tastenkombination konnte nicht registriert werden. Bitte wähle eine andere in den Einstellungen."
       },
+      "hotkeyWaylandLimitation": {
+        "title": "Hotkey funktioniert möglicherweise nicht"
+      },
       "addedToDict": "{{words}} zu deinem Wörterbuch hinzugefügt",
       "undo": "Rückgängig"
     },
@@ -1570,7 +1573,8 @@
       "hotkeyToSpeak": "{{hotkey}} drücken zum Sprechen",
       "recording": "Aufnahme...",
       "processing": "Verarbeitung...",
-      "clickToSpeak": "Klicken zum Sprechen"
+      "clickToSpeak": "Klicken zum Sprechen",
+      "dragToMove": "Ziehen zum Verschieben"
     },
     "buttons": {
       "cancelRecording": "Aufnahme abbrechen",

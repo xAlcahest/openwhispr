@@ -1563,6 +1563,9 @@
         "title": "Raccourci indisponible",
         "description": "Le raccourci sélectionné n’a pas pu être enregistré. Veuillez en choisir un autre dans les paramètres."
       },
+      "hotkeyWaylandLimitation": {
+        "title": "Le raccourci pourrait ne pas fonctionner"
+      },
       "addedToDict": "{{words}} ajouté à votre dictionnaire",
       "undo": "Annuler"
     },
@@ -1570,7 +1573,8 @@
       "hotkeyToSpeak": "Appuyez sur {{hotkey}} pour parler",
       "recording": "Enregistrement...",
       "processing": "Traitement...",
-      "clickToSpeak": "Cliquez pour parler"
+      "clickToSpeak": "Cliquez pour parler",
+      "dragToMove": "Glisser pour déplacer"
     },
     "buttons": {
       "cancelRecording": "Annuler l’enregistrement",

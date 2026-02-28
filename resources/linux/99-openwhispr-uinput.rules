@@ -1,0 +1,2 @@
+# OpenWhispr: Allow input group to write to /dev/uinput for paste simulation
+KERNEL=="uinput", GROUP="input", MODE="0660"

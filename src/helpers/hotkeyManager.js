@@ -208,6 +208,20 @@ class HotkeyManager {
       if (success) {
         this.currentHotkey = hotkey;
         debugLogger.log(`[HotkeyManager] Hotkey "${hotkey}" registered successfully`);
+
+        // On non-GNOME Wayland, globalShortcut may report success but silently fail
+        if (
+          process.platform === "linux" &&
+          GnomeShortcutManager.isWayland() &&
+          !this.useGnome
+        ) {
+          debugLogger.warn(
+            `[HotkeyManager] Hotkey "${hotkey}" registered on non-GNOME Wayland — may not fire. ` +
+              "Electron's globalShortcut has limited Wayland support."
+          );
+          this._notifyWaylandHotkeyLimitation(hotkey);
+        }
+
         return { success: true, hotkey };
       } else {
         const failureInfo = this.getFailureReason(accelerator);
@@ -261,6 +275,17 @@ class HotkeyManager {
       debugLogger.warn(
         `[HotkeyManager] Exception restoring previous hotkey "${previousHotkey}": ${err.message}`
       );
+    }
+  }
+
+  _notifyWaylandHotkeyLimitation(hotkey) {
+    if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+      this.mainWindow.webContents.send("hotkey-wayland-limitation", {
+        hotkey,
+        message:
+          `Global hotkey "${hotkey}" may not work on your Wayland compositor. ` +
+          "You can use the control panel's record button as a workaround.",
+      });
     }
   }
 

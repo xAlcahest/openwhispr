@@ -1563,6 +1563,9 @@
         "title": "快捷键不可用",
         "description": "无法注册所选快捷键。请在设置中选择其他快捷键。"
       },
+      "hotkeyWaylandLimitation": {
+        "title": "快捷键可能无法使用"
+      },
       "addedToDict": "已将 {{words}} 添加到你的词典",
       "undo": "撤消"
     },
@@ -1570,7 +1573,8 @@
       "hotkeyToSpeak": "按 {{hotkey}} 开始说话",
       "recording": "录音中...",
       "processing": "处理中...",
-      "clickToSpeak": "点击开始说话"
+      "clickToSpeak": "点击开始说话",
+      "dragToMove": "拖动以移动"
     },
     "buttons": {
       "cancelRecording": "取消录音",

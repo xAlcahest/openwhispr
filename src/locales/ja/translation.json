@@ -1563,6 +1563,9 @@
         "title": "ホットキーが使用できません",
         "description": "選択したホットキーを登録できませんでした。設定から別のホットキーを選択してください。"
       },
+      "hotkeyWaylandLimitation": {
+        "title": "ホットキーが動作しない可能性があります"
+      },
       "addedToDict": "{{words}} を辞書に追加しました",
       "undo": "元に戻す"
     },
@@ -1570,7 +1573,8 @@
       "hotkeyToSpeak": "{{hotkey}} を押して話す",
       "recording": "録音中...",
       "processing": "処理中...",
-      "clickToSpeak": "クリックして話す"
+      "clickToSpeak": "クリックして話す",
+      "dragToMove": "ドラッグして移動"
     },
     "buttons": {
       "cancelRecording": "録音をキャンセル",

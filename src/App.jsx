@@ -112,6 +112,14 @@ export default function App() {
       });
     });
 
+    const unsubscribeWaylandHotkey = window.electronAPI?.onHotkeyWaylandLimitation?.((data) => {
+      toast({
+        title: t("app.toasts.hotkeyWaylandLimitation.title"),
+        description: data.message,
+        duration: 10000,
+      });
+    });
+
     const unsubscribeCorrections = window.electronAPI?.onCorrectionsLearned?.((words) => {
       if (words && words.length > 0) {
         const wordList = words.map((w) => `\u201c${w}\u201d`).join(", ");
@@ -148,6 +156,7 @@ export default function App() {
     return () => {
       unsubscribeFallback?.();
       unsubscribeFailed?.();
+      unsubscribeWaylandHotkey?.();
       unsubscribeCorrections?.();
     };
   }, [toast, dismiss, t]);
@@ -269,7 +278,7 @@ export default function App() {
       case "hover":
         return {
           className: `${baseClasses} bg-black/50 cursor-pointer`,
-          tooltip: t("app.mic.hotkeyToSpeak", { hotkey }),
+          tooltip: t("app.mic.hotkeyToSpeak", { hotkey }) + " · " + t("app.mic.dragToMove"),
         };
       case "recording":
         return {

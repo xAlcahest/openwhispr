@@ -90,6 +90,7 @@
     "resources/bin/macos-text-monitor",
     "resources/bin/linux-fast-paste",
     "resources/bin/linux-text-monitor",
+    "resources/linux/99-openwhispr-uinput.rules",
     {
       "from": "resources/bin/",
       "to": "bin/",
@@ -159,6 +160,7 @@
     ]
   },
   "deb": {
+    "afterInstall": "scripts/postinstall-linux.sh",
     "afterRemove": "resources/linux/after-remove.sh",
     "fpm": [
       "--deb-suggests",
@@ -170,6 +172,8 @@
     ]
   },
   "rpm": {
+    "afterInstall": "scripts/postinstall-linux.sh",
+    "afterRemove": "resources/linux/after-remove.sh",
     "fpm": [
       "--rpm-tag",
       "Suggests: xdotool",

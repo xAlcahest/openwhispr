@@ -1559,6 +1559,9 @@
         "title": "快捷鍵無法使用",
         "description": "無法註冊所選快捷鍵。請在設定中選擇其他快捷鍵。"
       },
+      "hotkeyWaylandLimitation": {
+        "title": "快捷鍵可能無法使用"
+      },
       "addedToDict": "已將 {{words}} 加入到你的詞典",
       "undo": "復原"
     },
@@ -1566,7 +1569,8 @@
       "hotkeyToSpeak": "按 {{hotkey}} 開始說話",
       "recording": "錄音中...",
       "processing": "處理中...",
-      "clickToSpeak": "點擊開始說話"
+      "clickToSpeak": "點擊開始說話",
+      "dragToMove": "拖曳以移動"
     },
     "buttons": {
       "cancelRecording": "取消錄音",

@@ -434,6 +434,11 @@ contextBridge.exposeInMainWorld("electronAPI", {
     ipcRenderer.on("hotkey-registration-failed", listener);
     return () => ipcRenderer.removeListener("hotkey-registration-failed", listener);
   },
+  onHotkeyWaylandLimitation: (callback) => {
+    const listener = (_event, data) => callback?.(data);
+    ipcRenderer.on("hotkey-wayland-limitation", listener);
+    return () => ipcRenderer.removeListener("hotkey-wayland-limitation", listener);
+  },
   onWindowsPushToTalkUnavailable: registerListener("windows-ptt-unavailable"),
 
   // Notify main process of activation mode changes (for Windows Push-to-Talk)

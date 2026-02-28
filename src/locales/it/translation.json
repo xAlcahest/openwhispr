@@ -1563,6 +1563,9 @@
         "title": "Scorciatoia non disponibile",
         "description": "Non è stato possibile registrare la scorciatoia selezionata. Scegline un’altra nelle impostazioni."
       },
+      "hotkeyWaylandLimitation": {
+        "title": "Il tasto rapido potrebbe non funzionare"
+      },
       "addedToDict": "{{words}} aggiunto al tuo dizionario",
       "undo": "Annulla"
     },
@@ -1570,7 +1573,8 @@
       "hotkeyToSpeak": "Premi {{hotkey}} per parlare",
       "recording": "Registrazione...",
       "processing": "Elaborazione...",
-      "clickToSpeak": "Clicca per parlare"
+      "clickToSpeak": "Clicca per parlare",
+      "dragToMove": "Trascina per spostare"
     },
     "buttons": {
       "cancelRecording": "Annulla registrazione",
