@@ -701,6 +701,13 @@
     "waylandClipboardTitle": "Modo portapapeles en Wayland",
     "windowsReady": "Windows es compatible con el pegado automático de forma nativa. ¡No se requiere configuración!",
     "withoutToolPrefix": "Sin esta herramienta, OpenWhispr copiará el texto al portapapeles. Luego puedes pegarlo manualmente con Ctrl+V.",
+    "udevInstallTitle": "Activar pegado nativo",
+    "udevInstallDescription": "Instalar una regla del sistema para habilitar el pegado rápido en Wayland. Requiere contraseña.",
+    "udevAlreadyInstalled": "La regla de pegado nativo ya está instalada.",
+    "udevInstallButton": "Instalar",
+    "udevInstalling": "Instalando...",
+    "udevSuccess": "¡Instalado! Cierra sesión y vuelve a iniciarla.",
+    "udevError": "Error de instalación: {{error}}",
     "xwaylandAppsOnly": "el pegado automático funciona solo en apps XWayland"
   },
   "promptStudio": {

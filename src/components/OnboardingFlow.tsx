@@ -413,6 +413,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                       pasteToolsInfo={permissionsHook.pasteToolsInfo}
                       isChecking={permissionsHook.isCheckingPasteTools}
                       onCheck={permissionsHook.checkPasteToolsAvailability}
+                      onInstallUdevRule={permissionsHook.installUdevRule}
                     />
                   )}
               </div>
@@ -556,6 +557,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                   pasteToolsInfo={permissionsHook.pasteToolsInfo}
                   isChecking={permissionsHook.isCheckingPasteTools}
                   onCheck={permissionsHook.checkPasteToolsAvailability}
+                  onInstallUdevRule={permissionsHook.installUdevRule}
                 />
               )}
           </div>

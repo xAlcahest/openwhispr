@@ -701,6 +701,13 @@
     "waylandClipboardTitle": "Режим буфера обмена в Wayland",
     "windowsReady": "Windows поддерживает автоматическую вставку из коробки. Настройка не требуется!",
     "withoutToolPrefix": "Без этого инструмента OpenWhispr скопирует текст в буфер обмена. Вы сможете вставить его вручную с помощью Ctrl+V.",
+    "udevInstallTitle": "Включить нативную вставку",
+    "udevInstallDescription": "Установить системное правило для быстрой вставки в Wayland. Требуется пароль.",
+    "udevAlreadyInstalled": "Правило нативной вставки уже установлено.",
+    "udevInstallButton": "Установить",
+    "udevInstalling": "Установка...",
+    "udevSuccess": "Установлено! Выйдите и войдите снова.",
+    "udevError": "Ошибка установки: {{error}}",
     "xwaylandAppsOnly": "автоматическая вставка работает только для приложений XWayland"
   },
   "promptStudio": {

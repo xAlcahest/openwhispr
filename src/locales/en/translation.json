@@ -701,6 +701,13 @@
     "waylandClipboardTitle": "Clipboard Mode on Wayland",
     "windowsReady": "Windows supports automatic pasting out of the box. No setup required!",
     "withoutToolPrefix": "Without this tool, OpenWhispr will copy text to your clipboard. You can then paste manually with Ctrl+V.",
+    "udevInstallTitle": "Enable native paste",
+    "udevInstallDescription": "Install a system rule to enable fast paste on Wayland. Requires your password.",
+    "udevAlreadyInstalled": "Native paste rule is already installed.",
+    "udevInstallButton": "Install",
+    "udevInstalling": "Installing...",
+    "udevSuccess": "Installed! Log out and back in to apply.",
+    "udevError": "Installation failed: {{error}}",
     "xwaylandAppsOnly": "automatic pasting works for XWayland apps only"
   },
   "promptStudio": {

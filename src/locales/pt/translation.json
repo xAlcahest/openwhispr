@@ -673,6 +673,13 @@
     "waylandClipboardTitle": "Modo área de transferência no Wayland",
     "windowsReady": "O Windows suporta colagem automática nativamente. Nenhuma configuração necessária!",
     "withoutToolPrefix": "Sem essa ferramenta, o OpenWhispr copiará o texto para a área de transferência. Você poderá colar manualmente com Ctrl+V.",
+    "udevInstallTitle": "Ativar colagem nativa",
+    "udevInstallDescription": "Instalar uma regra do sistema para ativar colagem rápida no Wayland. Requer senha.",
+    "udevAlreadyInstalled": "A regra de colagem nativa já está instalada.",
+    "udevInstallButton": "Instalar",
+    "udevInstalling": "Instalando...",
+    "udevSuccess": "Instalado! Encerre a sessão e entre novamente.",
+    "udevError": "Falha na instalação: {{error}}",
     "xwaylandAppsOnly": "a colagem automática funciona apenas para apps XWayland"
   },
   "promptStudio": {

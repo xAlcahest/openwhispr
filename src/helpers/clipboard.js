@@ -1482,6 +1482,10 @@ Would you like to open System Settings now?`;
       recommendedInstall = "usermod -aG input $USER";
     }
 
+    const isPortableInstall = !!process.env.APPIMAGE ||
+      !fs.existsSync("/etc/udev/rules.d/99-openwhispr-uinput.rules");
+    const hasPkexec = this.commandExists("pkexec");
+
     return {
       platform: "linux",
       available,
@@ -1497,6 +1501,8 @@ Would you like to open System Settings now?`;
       xwaylandAvailable,
       hasNativeBinary,
       hasUinput,
+      isPortableInstall,
+      hasPkexec,
       tools,
       recommendedInstall,
     };

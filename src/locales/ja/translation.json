@@ -701,6 +701,13 @@
     "waylandClipboardTitle": "Wayland でのクリップボードモード",
     "windowsReady": "Windows は自動貼り付けに標準対応しています。設定は不要です！",
     "withoutToolPrefix": "このツールがない場合、OpenWhispr はテキストをクリップボードにコピーします。Ctrl+V で手動で貼り付けてください。",
+    "udevInstallTitle": "ネイティブ貼り付けを有効化",
+    "udevInstallDescription": "Waylandで高速貼り付けを有効にするシステムルールをインストールします。パスワードが必要です。",
+    "udevAlreadyInstalled": "ネイティブ貼り付けルールは既にインストールされています。",
+    "udevInstallButton": "インストール",
+    "udevInstalling": "インストール中...",
+    "udevSuccess": "インストール完了！ログアウトして再ログインしてください。",
+    "udevError": "インストール失敗: {{error}}",
     "xwaylandAppsOnly": "自動貼り付けは XWayland アプリのみで動作します"
   },
   "promptStudio": {

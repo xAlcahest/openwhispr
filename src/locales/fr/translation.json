@@ -701,6 +701,13 @@
     "waylandClipboardTitle": "Mode presse-papiers sur Wayland",
     "windowsReady": "Windows prend en charge le collage automatique nativement. Aucune configuration requise !",
     "withoutToolPrefix": "Sans cet outil, OpenWhispr copiera le texte dans le presse-papiers. Vous pourrez ensuite coller manuellement avec Ctrl+V.",
+    "udevInstallTitle": "Activer le collage natif",
+    "udevInstallDescription": "Installer une règle système pour activer le collage rapide sous Wayland. Mot de passe requis.",
+    "udevAlreadyInstalled": "La règle de collage natif est déjà installée.",
+    "udevInstallButton": "Installer",
+    "udevInstalling": "Installation...",
+    "udevSuccess": "Installé ! Déconnectez-vous et reconnectez-vous.",
+    "udevError": "Échec de l'installation : {{error}}",
     "xwaylandAppsOnly": "le collage automatique fonctionne uniquement pour les apps XWayland"
   },
   "promptStudio": {

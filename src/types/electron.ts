@@ -214,6 +214,8 @@ export interface PasteToolsResult {
   terminalAware?: boolean;
   hasNativeBinary?: boolean;
   hasUinput?: boolean;
+  isPortableInstall?: boolean;
+  hasPkexec?: boolean;
   tools?: string[];
   recommendedInstall?: string;
 }
@@ -406,6 +408,7 @@ declare global {
       readClipboard: () => Promise<string>;
       writeClipboard: (text: string) => Promise<{ success: boolean }>;
       checkPasteTools: () => Promise<PasteToolsResult>;
+      installUdevRule: () => Promise<{ success: boolean; needsLogout?: boolean; error?: string }>;
 
       // Audio
       onNoAudioDetected: (callback: (event: any, data?: any) => void) => () => void;

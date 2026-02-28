@@ -29,7 +29,6 @@ import { NEON_AUTH_URL, signOut } from "../lib/neonAuth";
 import MicPermissionWarning from "./ui/MicPermissionWarning";
 import MicrophoneSettings from "./ui/MicrophoneSettings";
 import PermissionCard from "./ui/PermissionCard";
-import PasteToolsInfo from "./ui/PasteToolsInfo";
 import TranscriptionModelPicker from "./TranscriptionModelPicker";
 import { ConfirmDialog, AlertDialog } from "./ui/dialog";
 import { Alert, AlertTitle, AlertDescription } from "./ui/alert";
@@ -814,6 +813,8 @@ export default function SettingsPage({ activeSection = "general" }: SettingsPage
 
   const [autoStartEnabled, setAutoStartEnabled] = useState(false);
   const [autoStartLoading, setAutoStartLoading] = useState(true);
+  const [udevInstalling, setUdevInstalling] = useState(false);
+  const [udevResult, setUdevResult] = useState<{ success: boolean; error?: string } | null>(null);
 
   useEffect(() => {
     if (platform === "linux") {
@@ -1777,6 +1778,43 @@ export default function SettingsPage({ activeSection = "general" }: SettingsPage
                   />
                 </SettingsPanelRow>
               </SettingsPanel>
+
+              {platform === "linux" &&
+                permissionsHook.pasteToolsInfo?.isWayland &&
+                permissionsHook.pasteToolsInfo?.isPortableInstall &&
+                permissionsHook.pasteToolsInfo?.hasPkexec && (
+                  <SettingsPanel className="mt-4">
+                    <SettingsPanelRow>
+                      <SettingsRow
+                        label={t("pasteToolsInfo.udevInstallTitle")}
+                        description={
+                          udevResult?.success
+                            ? t("pasteToolsInfo.udevSuccess")
+                            : udevResult && !udevResult.success
+                              ? t("pasteToolsInfo.udevError", { error: udevResult.error })
+                              : permissionsHook.pasteToolsInfo.hasUinput
+                                ? t("pasteToolsInfo.udevAlreadyInstalled")
+                                : t("pasteToolsInfo.udevInstallDescription")
+                        }
+                      >
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          disabled={!!permissionsHook.pasteToolsInfo.hasUinput || udevInstalling || !!udevResult?.success}
+                          onClick={async () => {
+                            setUdevInstalling(true);
+                            setUdevResult(null);
+                            const result = await permissionsHook.installUdevRule();
+                            setUdevResult(result ?? { success: false, error: "No response" });
+                            setUdevInstalling(false);
+                          }}
+                        >
+                          {udevInstalling ? t("pasteToolsInfo.udevInstalling") : t("pasteToolsInfo.udevInstallButton")}
+                        </Button>
+                      </SettingsRow>
+                    </SettingsPanelRow>
+                  </SettingsPanel>
+                )}
             </div>
           </div>
         );
@@ -2404,16 +2442,6 @@ export default function SettingsPage({ activeSection = "general" }: SettingsPage
                   onOpenPrivacySettings={permissionsHook.openMicPrivacySettings}
                 />
               )}
-
-              {platform === "linux" &&
-                permissionsHook.pasteToolsInfo &&
-                !permissionsHook.pasteToolsInfo.available && (
-                  <PasteToolsInfo
-                    pasteToolsInfo={permissionsHook.pasteToolsInfo}
-                    isChecking={permissionsHook.isCheckingPasteTools}
-                    onCheck={permissionsHook.checkPasteToolsAvailability}
-                  />
-                )}
 
               {platform === "darwin" && (
                 <div className="mt-5">

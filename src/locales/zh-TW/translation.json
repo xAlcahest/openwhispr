@@ -701,6 +701,13 @@
     "waylandClipboardTitle": "Wayland 剪貼簿模式",
     "windowsReady": "Windows 內建支援自動貼上。不需要額外設定！",
     "withoutToolPrefix": "若未安裝此工具，OpenWhispr 會將文字複製到剪貼簿。你可以使用 Ctrl+V 手動貼上。",
+    "udevInstallTitle": "啟用原生貼上",
+    "udevInstallDescription": "安裝系統規則以在 Wayland 上啟用快速貼上。需要密碼。",
+    "udevAlreadyInstalled": "原生貼上規則已安裝。",
+    "udevInstallButton": "安裝",
+    "udevInstalling": "正在安裝...",
+    "udevSuccess": "安裝完成！請登出後重新登入。",
+    "udevError": "安裝失敗：{{error}}",
     "xwaylandAppsOnly": "自動貼上僅適用於 XWayland 應用程式"
   },
   "promptStudio": {

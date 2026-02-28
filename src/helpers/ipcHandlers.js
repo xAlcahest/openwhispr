@@ -650,6 +650,31 @@ class IPCHandlers {
       return this.clipboardManager.checkPasteTools();
     });
 
+    ipcMain.handle("install-udev-rule", async () => {
+      const fs = require("fs");
+      const { spawnSync } = require("child_process");
+
+      const rulesSource = path.join(process.resourcesPath, "linux", "99-openwhispr-uinput.rules");
+      const rulesDest = "/etc/udev/rules.d/99-openwhispr-uinput.rules";
+
+      if (!fs.existsSync(rulesSource)) {
+        return { success: false, error: "udev rule file not found in app bundle" };
+      }
+
+      try {
+        const { status } = spawnSync("pkexec", ["sh", "-c",
+          `cp "${rulesSource}" "${rulesDest}" && udevadm control --reload-rules && usermod -aG input "${process.env.USER}"`
+        ], { timeout: 30000 });
+
+        if (status === 0) {
+          return { success: true, needsLogout: true };
+        }
+        return { success: false, error: "pkexec command failed or was cancelled" };
+      } catch (err) {
+        return { success: false, error: err.message };
+      }
+    });
+
     ipcMain.handle("transcribe-local-whisper", async (event, audioBlob, options = {}) => {
       debugLogger.log("transcribe-local-whisper called", {
         audioBlobType: typeof audioBlob,

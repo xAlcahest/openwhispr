@@ -701,6 +701,13 @@
     "waylandClipboardTitle": "Modalità appunti su Wayland",
     "windowsReady": "Windows supporta l'incollaggio automatico senza configurazione aggiuntiva!",
     "withoutToolPrefix": "Senza questo strumento, OpenWhispr copierà il testo negli appunti. Potrai poi incollare manualmente con Ctrl+V.",
+    "udevInstallTitle": "Attiva incolla nativo",
+    "udevInstallDescription": "Installa una regola di sistema per abilitare l'incolla rapido su Wayland. Richiede la password.",
+    "udevAlreadyInstalled": "La regola di incolla nativo è già installata.",
+    "udevInstallButton": "Installa",
+    "udevInstalling": "Installazione...",
+    "udevSuccess": "Installato! Disconnettiti e riaccedi.",
+    "udevError": "Installazione fallita: {{error}}",
     "xwaylandAppsOnly": "l'incollaggio automatico funziona solo per le app XWayland"
   },
   "promptStudio": {

@@ -701,6 +701,13 @@
     "waylandClipboardTitle": "Zwischenablage-Modus unter Wayland",
     "windowsReady": "Windows unterstützt automatisches Einfügen direkt. Keine Einrichtung erforderlich!",
     "withoutToolPrefix": "Ohne dieses Tool kopiert OpenWhispr den Text in Ihre Zwischenablage. Sie können ihn dann manuell mit Ctrl+V einfügen.",
+    "udevInstallTitle": "Nativen Paste aktivieren",
+    "udevInstallDescription": "Systemregel installieren, um schnelles Einfügen unter Wayland zu ermöglichen. Passwort erforderlich.",
+    "udevAlreadyInstalled": "Die native Einfügeregel ist bereits installiert.",
+    "udevInstallButton": "Installieren",
+    "udevInstalling": "Wird installiert...",
+    "udevSuccess": "Installiert! Abmelden und wieder anmelden.",
+    "udevError": "Installation fehlgeschlagen: {{error}}",
     "xwaylandAppsOnly": "Automatisches Einfügen funktioniert nur für XWayland-Apps"
   },
   "promptStudio": {

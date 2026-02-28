@@ -15,6 +15,7 @@ export interface UsePermissionsReturn {
   requestMicPermission: () => Promise<void>;
   testAccessibilityPermission: () => Promise<void>;
   checkPasteToolsAvailability: () => Promise<PasteToolsResult | null>;
+  installUdevRule: () => Promise<{ success: boolean; needsLogout?: boolean; error?: string } | null>;
   openMicPrivacySettings: () => Promise<void>;
   openSoundInputSettings: () => Promise<void>;
   openAccessibilitySettings: () => Promise<void>;
@@ -348,6 +349,18 @@ export const usePermissions = (
     }
   }, [showAlertDialog, checkPasteToolsAvailability, setAccessibilityPermissionGranted, t]);
 
+  const installUdevRule = useCallback(async () => {
+    try {
+      const result = await window.electronAPI?.installUdevRule?.();
+      if (result?.success) {
+        await checkPasteToolsAvailability();
+      }
+      return result ?? null;
+    } catch {
+      return null;
+    }
+  }, [checkPasteToolsAvailability]);
+
   return {
     micPermissionGranted,
     accessibilityPermissionGranted,
@@ -357,6 +370,7 @@ export const usePermissions = (
     requestMicPermission,
     testAccessibilityPermission,
     checkPasteToolsAvailability,
+    installUdevRule,
     openMicPrivacySettings,
     openSoundInputSettings,
     openAccessibilitySettings,
