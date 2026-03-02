@@ -270,7 +270,7 @@ function initializeCoreManagers() {
 
 // Phase 2: Non-critical setup after windows are visible
 function initializeDeferredManagers() {
-  ensureYdotool();
+  ensureYdotool().catch(() => {});
   clipboardManager.preWarmAccessibility();
   trayManager = new TrayManager();
   globeKeyManager = new GlobeKeyManager();

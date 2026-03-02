@@ -160,12 +160,14 @@
   },
   "deb": {
     "afterRemove": "resources/linux/after-remove.sh",
-    "depends": ["ydotool", "wl-clipboard"],
+    "depends": ["ydotool"],
     "fpm": [
       "--deb-suggests",
       "xdotool",
       "--deb-suggests",
-      "wtype"
+      "wtype",
+      "--deb-recommends",
+      "wl-clipboard"
     ]
   },
   "rpm": {
@@ -173,11 +175,11 @@
       "--rpm-tag",
       "Requires: ydotool",
       "--rpm-tag",
-      "Requires: wl-clipboard",
-      "--rpm-tag",
       "Suggests: xdotool",
       "--rpm-tag",
-      "Suggests: wtype"
+      "Suggests: wtype",
+      "--rpm-tag",
+      "Recommends: wl-clipboard"
     ]
   },
   "nsis": {
