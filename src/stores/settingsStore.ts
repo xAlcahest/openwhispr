@@ -676,6 +676,20 @@ export async function initializeSettings(): Promise<void> {
       );
     }
 
+    // Sync meeting detection preferences to main process
+    try {
+      window.electronAPI?.meetingDetectionSetPreferences?.({
+        processDetection: state.meetingProcessDetection,
+        audioDetection: state.meetingAudioDetection,
+      });
+    } catch (err) {
+      logger.warn(
+        "Failed to sync meeting detection preferences on startup",
+        { error: (err as Error).message },
+        "settings"
+      );
+    }
+
     // Sync activation mode from main process
     try {
       const envMode = await window.electronAPI.getActivationMode?.();

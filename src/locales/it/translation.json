@@ -1110,6 +1110,12 @@
         "startMinimized": "Avvia ridotto a icona",
         "startMinimizedDescription": "Avvia senza mostrare la finestra del pannello di controllo"
       },
+      "meetingDetection": {
+        "title": "Rilevamento riunioni",
+        "description": "Rilevamento automatico di riunioni e chiamate",
+        "autoDetect": "Rileva riunioni automaticamente",
+        "autoDetectDescription": "Rileva automaticamente quando sei in una riunione e proponi di prendere appunti"
+      },
       "waylandPaste": {
         "title": "Configurazione incolla su Wayland",
         "description": "L'incolla automatico su Wayland richiede ydotool. Controlla lo stato di ogni componente qui sotto.",

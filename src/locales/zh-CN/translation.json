@@ -1106,6 +1106,12 @@
         "startMinimized": "启动时最小化",
         "startMinimizedDescription": "启动时不显示控制面板窗口"
       },
+      "meetingDetection": {
+        "title": "会议检测",
+        "description": "自动检测会议和通话",
+        "autoDetect": "自动检测会议",
+        "autoDetectDescription": "自动检测您是否在开会，并提供记录笔记的选项"
+      },
       "waylandPaste": {
         "title": "Wayland 粘贴设置",
         "description": "Wayland 下的自动粘贴需要 ydotool。请检查以下各组件的状态。",

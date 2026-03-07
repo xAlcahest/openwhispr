@@ -1110,6 +1110,12 @@
         "startMinimized": "Démarrer réduit",
         "startMinimizedDescription": "Lancer sans afficher la fenêtre du panneau de contrôle"
       },
+      "meetingDetection": {
+        "title": "Détection de réunions",
+        "description": "Détection automatique des réunions et appels",
+        "autoDetect": "Détecter les réunions automatiquement",
+        "autoDetectDescription": "Détecter automatiquement quand vous êtes en réunion et proposer de prendre des notes"
+      },
       "waylandPaste": {
         "title": "Configuration du collage Wayland",
         "description": "Le collage automatique sous Wayland nécessite ydotool. Vérifiez l'état de chaque composant ci-dessous.",

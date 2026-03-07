@@ -1110,6 +1110,12 @@
         "startMinimized": "Iniciar minimizado",
         "startMinimizedDescription": "Iniciar sin mostrar la ventana del panel de control"
       },
+      "meetingDetection": {
+        "title": "Detección de reuniones",
+        "description": "Detección automática de reuniones y llamadas",
+        "autoDetect": "Detectar reuniones automáticamente",
+        "autoDetectDescription": "Detectar automáticamente cuando estás en una reunión y ofrecer tomar notas"
+      },
       "waylandPaste": {
         "title": "Configuración de pegado en Wayland",
         "description": "El pegado automático en Wayland requiere ydotool. Comprueba el estado de cada componente a continuación.",

@@ -1169,6 +1169,12 @@
         "startMinimized": "Start minimized",
         "startMinimizedDescription": "Launch without showing the control panel window"
       },
+      "meetingDetection": {
+        "title": "Meeting Detection",
+        "description": "Automatic detection of meetings and calls",
+        "autoDetect": "Auto-detect meetings",
+        "autoDetectDescription": "Automatically detect when you're in a meeting and offer to take notes"
+      },
       "waylandPaste": {
         "title": "Wayland Paste Setup",
         "description": "Auto-paste on Wayland requires ydotool. Check the status of each component below.",

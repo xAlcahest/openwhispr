@@ -1106,6 +1106,12 @@
         "startMinimized": "啟動時最小化",
         "startMinimizedDescription": "啟動時不顯示控制面板視窗"
       },
+      "meetingDetection": {
+        "title": "會議偵測",
+        "description": "自動偵測會議和通話",
+        "autoDetect": "自動偵測會議",
+        "autoDetectDescription": "自動偵測您是否在開會，並提供記錄筆記的選項"
+      },
       "waylandPaste": {
         "title": "Wayland 貼上設定",
         "description": "Wayland 下的自動貼上需要 ydotool。請檢查以下各元件的狀態。",

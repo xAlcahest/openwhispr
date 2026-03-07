@@ -1106,6 +1106,12 @@
         "startMinimized": "Minimiert starten",
         "startMinimizedDescription": "Starten, ohne das Einstellungsfenster anzuzeigen"
       },
+      "meetingDetection": {
+        "title": "Meeting-Erkennung",
+        "description": "Automatische Erkennung von Meetings und Anrufen",
+        "autoDetect": "Meetings automatisch erkennen",
+        "autoDetectDescription": "Automatisch erkennen, wenn Sie in einem Meeting sind, und anbieten, Notizen zu machen"
+      },
       "waylandPaste": {
         "title": "Wayland-Einfügen einrichten",
         "description": "Das automatische Einfügen unter Wayland erfordert ydotool. Prüfen Sie den Status der einzelnen Komponenten.",

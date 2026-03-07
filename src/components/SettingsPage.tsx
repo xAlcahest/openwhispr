@@ -700,6 +700,8 @@ export default function SettingsPage({ activeSection = "general" }: SettingsPage
     setFloatingIconAutoHide,
     startMinimized,
     setStartMinimized,
+    meetingDetectionEnabled,
+    setMeetingDetectionEnabled,
     panelStartPosition,
     setPanelStartPosition,
     cloudBackupEnabled,
@@ -1898,6 +1900,27 @@ export default function SettingsPage({ activeSection = "general" }: SettingsPage
                     description={t("settingsPage.general.startup.startMinimizedDescription")}
                   >
                     <Toggle checked={startMinimized} onChange={setStartMinimized} />
+                  </SettingsRow>
+                </SettingsPanelRow>
+              </SettingsPanel>
+            </div>
+
+            {/* Meeting Detection */}
+            <div>
+              <SectionHeader
+                title={t("settingsPage.general.meetingDetection.title")}
+                description={t("settingsPage.general.meetingDetection.description")}
+              />
+              <SettingsPanel>
+                <SettingsPanelRow>
+                  <SettingsRow
+                    label={t("settingsPage.general.meetingDetection.autoDetect")}
+                    description={t("settingsPage.general.meetingDetection.autoDetectDescription")}
+                  >
+                    <Toggle
+                      checked={meetingDetectionEnabled}
+                      onChange={setMeetingDetectionEnabled}
+                    />
                   </SettingsRow>
                 </SettingsPanelRow>
               </SettingsPanel>

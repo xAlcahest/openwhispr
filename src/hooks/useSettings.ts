@@ -239,6 +239,15 @@ function useSettingsInternal() {
     setAutoLearnCorrections,
     keepTranscriptionInClipboard: store.keepTranscriptionInClipboard,
     setKeepTranscriptionInClipboard: store.setKeepTranscriptionInClipboard,
+    meetingDetectionEnabled: store.meetingProcessDetection || store.meetingAudioDetection,
+    setMeetingDetectionEnabled: (enabled: boolean) => {
+      store.setMeetingProcessDetection(enabled);
+      store.setMeetingAudioDetection(enabled);
+      window.electronAPI?.meetingDetectionSetPreferences?.({
+        processDetection: enabled,
+        audioDetection: enabled,
+      });
+    },
     cloudBackupEnabled: store.cloudBackupEnabled,
     setCloudBackupEnabled: store.setCloudBackupEnabled,
     telemetryEnabled: store.telemetryEnabled,

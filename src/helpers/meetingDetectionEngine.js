@@ -196,8 +196,17 @@ class MeetingDetectionEngine {
   }
 
   setPreferences(prefs) {
-    debugLogger.info("Updating detection preferences", prefs, "meeting");
+    const wasBothDisabled = !this.preferences.processDetection && !this.preferences.audioDetection;
     Object.assign(this.preferences, prefs);
+    const isBothDisabled = !this.preferences.processDetection && !this.preferences.audioDetection;
+
+    if (wasBothDisabled && !isBothDisabled) {
+      debugLogger.info("Meeting detection enabled", this.preferences, "meeting");
+    } else if (!wasBothDisabled && isBothDisabled) {
+      debugLogger.info("Meeting detection disabled", {}, "meeting");
+    } else {
+      debugLogger.info("Meeting detection preferences updated", this.preferences, "meeting");
+    }
 
     if (this.preferences.processDetection) {
       this.meetingProcessDetector.start();

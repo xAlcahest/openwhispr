@@ -1106,6 +1106,12 @@
         "startMinimized": "最小化で起動",
         "startMinimizedDescription": "コントロールパネルウィンドウを表示せずに起動"
       },
+      "meetingDetection": {
+        "title": "会議の検出",
+        "description": "会議や通話の自動検出",
+        "autoDetect": "会議を自動検出",
+        "autoDetectDescription": "会議中であることを自動的に検出し、メモを取ることを提案します"
+      },
       "waylandPaste": {
         "title": "Wayland 貼り付け設定",
         "description": "Wayland での自動貼り付けには ydotool が必要です。各コンポーネントの状態を確認してください。",

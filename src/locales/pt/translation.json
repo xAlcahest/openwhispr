@@ -1082,6 +1082,12 @@
         "startMinimized": "Iniciar minimizado",
         "startMinimizedDescription": "Iniciar sem mostrar a janela do painel de controle"
       },
+      "meetingDetection": {
+        "title": "Deteção de reuniões",
+        "description": "Deteção automática de reuniões e chamadas",
+        "autoDetect": "Detetar reuniões automaticamente",
+        "autoDetectDescription": "Detetar automaticamente quando está numa reunião e oferecer para tomar notas"
+      },
       "waylandPaste": {
         "title": "Configuração de colagem no Wayland",
         "description": "A colagem automática no Wayland requer o ydotool. Verifique o estado de cada componente abaixo.",
