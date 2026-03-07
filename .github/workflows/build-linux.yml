@@ -3,6 +3,9 @@ name: Build Linux
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-linux:
     runs-on: ubuntu-latest
@@ -54,13 +57,13 @@ jobs:
       - name: Build Application
         run: npm run build:linux
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-builds
-          path: |
-            dist/*.AppImage
-            dist/*.deb
-            dist/*.rpm
-            dist/*.tar.gz
-          retention-days: 7
+      - name: Create pre-release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="dev-linux-$(date +'%Y%m%d-%H%M%S')"
+          gh release create "$TAG" \
+            --title "Linux Dev Build (${{ github.ref_name }})" \
+            --notes "Dev build from branch \`${{ github.ref_name }}\` @ ${{ github.sha }}" \
+            --prerelease \
+            dist/*.AppImage dist/*.deb dist/*.rpm dist/*.tar.gz
