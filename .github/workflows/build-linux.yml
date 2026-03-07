@@ -1,0 +1,77 @@
+name: Build Linux
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache native binaries
+        uses: actions/cache@v4
+        with:
+          path: resources/bin
+          key: linux-x64-bin-${{ hashFiles('scripts/download-*.js') }}
+
+      - name: Download whisper.cpp binaries
+        run: node scripts/download-whisper-cpp.js --current
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download llama-server binaries
+        run: node scripts/download-llama-server.js --current
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download sherpa-onnx binaries
+        run: node scripts/download-sherpa-onnx.js --current
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache Electron
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/electron
+          key: linux-electron-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: linux-electron-
+
+      - name: Install Linux build and packaging dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm libx11-dev libxtst-dev libatspi2.0-dev libglib2.0-dev
+
+      - name: Create runtime env
+        run: |
+          echo "GOOGLE_CALENDAR_CLIENT_ID=${{ secrets.GOOGLE_CALENDAR_CLIENT_ID }}" >> .env
+          echo "GOOGLE_CALENDAR_CLIENT_SECRET=${{ secrets.GOOGLE_CALENDAR_CLIENT_SECRET }}" >> .env
+
+      - name: Build Application
+        run: npm run build:linux -- --publish never
+        env:
+          VITE_NEON_AUTH_URL: ${{ vars.VITE_NEON_AUTH_URL }}
+          VITE_OPENWHISPR_API_URL: ${{ vars.VITE_OPENWHISPR_API_URL }}
+
+      - name: Create pre-release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="dev-linux-$(date +'%Y%m%d-%H%M%S')"
+          gh release create "$TAG" \
+            --title "Linux Dev Build (${{ github.ref_name }})" \
+            --notes "Dev build from branch \`${{ github.ref_name }}\` @ ${{ github.sha }}" \
+            --prerelease \
+            dist/*.AppImage dist/*.deb dist/*.rpm dist/*.tar.gz
