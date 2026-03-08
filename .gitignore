@@ -196,7 +196,7 @@ resources/bin/
 .AppleDouble
 .LSOverride
 
-# Icon must end with two \r
+# Icon must end with two 
 Icon
 
 # Thumbnails
@@ -314,4 +314,3 @@ Thumbs.db
 .macos-fast-paste.hash
 .macos-fast-paste.*.hash
 .linux-fast-paste.hash
-CLAUDE.md
