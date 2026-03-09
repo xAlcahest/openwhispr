@@ -1,0 +1,90 @@
+name: Build Windows
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache native binaries
+        uses: actions/cache@v4
+        with:
+          path: resources/bin
+          key: windows-x64-bin-${{ hashFiles('scripts/download-*.js') }}
+
+      - name: Download whisper.cpp binaries
+        run: node scripts/download-whisper-cpp.js --current
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download llama-server binaries
+        run: node scripts/download-llama-server.js --current
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download sherpa-onnx binaries
+        run: node scripts/download-sherpa-onnx.js --current
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download nircmd.exe
+        run: node scripts/download-nircmd.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download windows-fast-paste.exe
+        run: node scripts/download-windows-fast-paste.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download windows-key-listener.exe
+        run: node scripts/download-windows-key-listener.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache Electron
+        uses: actions/cache@v4
+        with:
+          path: ~/AppData/Local/electron/Cache
+          key: windows-electron-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: windows-electron-
+
+      - name: Create runtime env
+        shell: bash
+        run: |
+          echo "GOOGLE_CALENDAR_CLIENT_ID=${{ secrets.GOOGLE_CALENDAR_CLIENT_ID }}" >> .env
+          echo "GOOGLE_CALENDAR_CLIENT_SECRET=${{ secrets.GOOGLE_CALENDAR_CLIENT_SECRET }}" >> .env
+
+      - name: Build Application
+        run: npm run build:win -- --publish never
+        env:
+          VITE_NEON_AUTH_URL: ${{ vars.VITE_NEON_AUTH_URL }}
+          VITE_OPENWHISPR_API_URL: ${{ vars.VITE_OPENWHISPR_API_URL }}
+          VITE_OPENWHISPR_OAUTH_CALLBACK_URL: ${{ vars.VITE_OPENWHISPR_OAUTH_CALLBACK_URL }}
+
+      - name: Create pre-release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="dev-win-$(date +'%Y%m%d-%H%M%S')"
+          gh release create "$TAG" \
+            --title "Windows Dev Build (${{ github.ref_name }})" \
+            --notes "Dev build from branch \`${{ github.ref_name }}\` @ ${{ github.sha }}" \
+            --prerelease \
+            dist/*.exe
