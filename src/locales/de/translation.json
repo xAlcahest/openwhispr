@@ -152,14 +152,17 @@
     "permissions": {
       "title": "Berechtigungen",
       "microphoneTitle": "Mikrofon",
-      "microphoneDescription": "Zum Erfassen Ihrer Stimme",
+      "microphoneDescription": "Nimmt Ihre Stimme für die Transkription auf",
       "grant": "Erteilen",
       "accessibilityTitle": "Bedienungshilfen",
       "accessibilityDescription": "In Systemeinstellungen aktivieren",
       "testAndGrant": "Testen & erteilen",
       "requiredForApp": "Erforderlich, damit OpenWhispr funktioniert",
       "microphoneRequired": "Mikrofonzugriff erforderlich",
-      "openSystemSettings": "Systemeinstellungen öffnen"
+      "openSystemSettings": "Systemeinstellungen öffnen",
+      "screenRecordingTitle": "Systemaudio",
+      "screenRecordingDescription": "Nimmt den Ton anderer Teilnehmer aus Anrufen und Meetings auf. Wir nehmen Ihren Bildschirm nie auf.",
+      "optional": "Optional"
     },
     "transcription": {
       "title": "Transkriptions-Einrichtung",
@@ -861,6 +864,7 @@
         "limitReached": "Limit erreicht",
         "pastDue": "Überfällig",
         "pro": "Pro",
+        "business": "Business",
         "trial": "Testversion"
       },
       "billing": {
@@ -897,25 +901,24 @@
       "planLabels": {
         "free": "Kostenlos",
         "pro": "Pro",
+        "business": "Business",
         "trial": "Testversion"
       },
       "planTitle": "Tarif",
       "pricing": {
         "title": "Tarife",
-        "monthly": "Monatlich",
-        "annual": "Jährlich",
-        "annualBadge": "17 % sparen",
+        "billedYearly": "Jährliche Abrechnung",
         "free": {
-          "name": "Kostenlos",
+          "name": "Free",
           "price": "$0",
           "period": "für immer",
           "features": [
-            "2.000 Wörter/Woche",
-            "Lokale KI-Modelle",
-            "Eigene Schlüssel verwenden",
-            "Wörterbuch und Snippets",
-            "Unterstützung für 100+ Sprachen",
-            "Keine Datenspeicherung"
+            "Up to 2,000 words/week",
+            "5 hours of meetings per month",
+            "Local AI models included",
+            "Bring your own API keys",
+            "Zero data retention",
+            "Community support"
           ]
         },
         "pro": {
@@ -924,25 +927,66 @@
           "monthlyPeriod": "/Monat",
           "annualPrice": "$80",
           "annualPeriod": "/Jahr",
+          "annualEquivalent": "$6.67",
+          "includesPrefix": "Alle Free-Funktionen +",
           "features": [
-            "Alles aus Kostenlos",
-            "Unbegrenzte Nutzung",
-            "Echtzeit-Transkription",
-            "Neueste Audio- & KI-Modelle",
-            "iOS/Android (demnächst)",
-            "Keine Datenspeicherung",
-            "Vorrangiger Support"
+            "Unlimited words per week",
+            "20 hours of meetings per month",
+            "Email support",
+            "Zero data retention"
           ],
           "cta": "Jetzt starten",
-          "switchToAnnual": "Zu Jährlich wechseln"
+          "switchToAnnual": "Zum Jahresabo wechseln"
+        },
+        "business": {
+          "name": "Business",
+          "monthlyPrice": "$20",
+          "monthlyPeriod": "/Monat",
+          "annualPrice": "$200",
+          "annualPeriod": "/Jahr",
+          "annualEquivalent": "$16.67",
+          "includesPrefix": "Alle Pro-Funktionen +",
+          "badge": "Beliebteste Wahl",
+          "features": [
+            "Unlimited usage",
+            "Unlimited meeting recordings",
+            "Priority support",
+            "Zero data retention"
+          ],
+          "cta": "Jetzt starten",
+          "switchToAnnual": "Zum Jahresabo wechseln"
         },
         "enterprise": {
           "name": "Enterprise",
           "price": "Individuell",
-          "features": ["Cloud-Synchronisation", "Team-Funktionen (demnächst)", "SSO & Compliance"],
+          "subtitle": "Nur jährliche Abrechnung",
+          "includesPrefix": "Alle Business-Funktionen +",
+          "features": [
+            "Managed API credits",
+            "Cloud sync across devices",
+            "Team features & admin",
+            "SSO & compliance"
+          ],
           "cta": "Kontakt aufnehmen"
         },
-        "currentPlan": "Aktueller Tarif"
+        "currentPlan": "Aktueller Tarif",
+        "upgrade": "Upgrade",
+        "downgrade": "Downgrade",
+        "planSwitched": "Plan erfolgreich aktualisiert",
+        "confirmSwitch": {
+          "title": "Planwechsel bestätigen",
+          "description": "Zu {{plan}} ({{interval}}) wechseln",
+          "monthly": "monatlich",
+          "yearly": "jährlich",
+          "chargeToday": "Heutige Belastung",
+          "accountCredit": "Kontoguthaben",
+          "newPrice": "Neuer Preis",
+          "nextBilling": "Nächste Abrechnung",
+          "mo": "mo",
+          "yr": "yr",
+          "cancel": "Abbrechen",
+          "confirm": "Bestätigen"
+        }
       },
       "rollingWeeklyLimit": "Rollierendes Wochenlimit",
       "signOut": {
@@ -1228,7 +1272,7 @@
       "accessibilityDescription": "Erforderlich, damit automatisches Einfügen nach der Transkription funktioniert",
       "accessibilityTitle": "Bedienungshilfen",
       "description": "Systemberechtigungen testen und verwalten, die OpenWhispr für den ordnungsgemäßen Betrieb benötigt",
-      "microphoneDescription": "Erforderlich für Sprachaufnahme und Diktat",
+      "microphoneDescription": "Nimmt Ihre Stimme für Diktat und Transkription auf",
       "microphoneTitle": "Mikrofon",
       "resetAccessibility": {
         "description": "Dadurch wird OpenWhispr aus den Bedienungshilfen-Berechtigungen entfernt. Sie müssen den Zugriff unter Systemeinstellungen > Datenschutz & Sicherheit > Bedienungshilfen erneut gewähren.",
@@ -1236,6 +1280,9 @@
         "rowDescription": "Probleme nach Neuinstallation oder Neuerstellung der App beheben, indem OpenWhispr in den Systemeinstellungen entfernt und erneut hinzugefügt wird",
         "title": "Bedienungshilfen-Berechtigungen zurücksetzen"
       },
+      "optional": "Optional",
+      "screenRecordingTitle": "Systemaudio",
+      "screenRecordingDescription": "Nimmt den Ton anderer Teilnehmer aus Anrufen und Meetings auf",
       "test": "Testen",
       "testAndGrant": "Testen & erteilen",
       "title": "Berechtigungen",
@@ -1457,8 +1504,7 @@
       "staleIndicator": "Der Inhalt hat sich seit der Verbesserung geändert",
       "live": "Live",
       "transcript": "Transkript",
-      "notes": "Notizen",
-      "generateNotes": "Notizen generieren"
+      "notes": "Notizen"
     },
     "upload": {
       "title": "Audio hochladen",
@@ -1535,9 +1581,9 @@
       "selectAction": "Aktion auswählen",
       "done": "Fertig",
       "builtin": {
-        "cleanupNotes": {
-          "name": "Notizen bereinigen",
-          "description": "Grammatik, Struktur und Formatierung verbessern"
+        "generateNotes": {
+          "name": "Notizen generieren",
+          "description": "Notizen bereinigen, strukturieren und verbessern"
         }
       },
       "errors": {
@@ -1630,6 +1676,7 @@
     "trial": "Testphase (noch {{days}} Tag)",
     "trial_other": "Testphase (noch {{days}} Tage)",
     "pro": "Pro",
+    "business": "Business",
     "unlimitedTrial": "Unbegrenzte Transkriptionen während deiner Testphase",
     "unlimited": "Unbegrenzte Transkriptionen",
     "manageSubscription": "Abonnement verwalten",
@@ -1760,7 +1807,10 @@
       "addAnother": "Weiteren Kalender hinzufügen",
       "disconnect": "Trennen",
       "disconnectConfirm": "{{email}} trennen?",
-      "disconnectDescription": "Besprechungsnotizen werden von diesem Kalender nicht mehr aufgezeichnet."
+      "disconnectDescription": "Besprechungsnotizen werden von diesem Kalender nicht mehr aufgezeichnet.",
+      "screenRecordingRequired": "Systemaudio-Berechtigung erforderlich",
+      "screenRecordingDescription": "Zum Transkribieren von Meetings benötigt OpenWhispr die Systemaudio-Berechtigung, um den Ton anderer Teilnehmer aufzunehmen. Wir nehmen Ihren Bildschirm nie auf. Sie werden zu den Systemeinstellungen weitergeleitet, um diese zu aktivieren.",
+      "openSettings": "Systemeinstellungen öffnen"
     },
     "plan": {
       "title": "Dein Plan",
@@ -1793,6 +1843,8 @@
     "now": "Jetzt",
     "join": "Beitreten",
     "untitledEvent": "Unbenanntes Ereignis",
+    "screenRecordingRequired": "Die Systemaudio-Berechtigung wird benötigt, um den Ton anderer Teilnehmer aufzunehmen.",
+    "openSettings": "Systemeinstellungen öffnen",
     "signInRequired": "Melden Sie sich an, um Meeting-Aufnahmen zu nutzen",
     "signInDescription": "Erstellen Sie ein Konto oder melden Sie sich an, um Meetings aufzunehmen und zu transkribieren.",
     "connectCalendar": "Kalender verbinden",

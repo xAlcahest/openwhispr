@@ -152,14 +152,17 @@
     "permissions": {
       "title": "Разрешения",
       "microphoneTitle": "Микрофон",
-      "microphoneDescription": "Для записи голоса",
+      "microphoneDescription": "Записывает ваш голос для транскрипции",
       "grant": "Предоставить",
       "accessibilityTitle": "Универсальный доступ",
       "accessibilityDescription": "Включите в Системных настройках",
       "testAndGrant": "Проверить и предоставить",
       "requiredForApp": "Необходимо для работы OpenWhispr",
       "microphoneRequired": "Требуется доступ к микрофону",
-      "openSystemSettings": "Открыть Системные настройки"
+      "openSystemSettings": "Открыть Системные настройки",
+      "screenRecordingTitle": "Системное аудио",
+      "screenRecordingDescription": "Записывает аудио других участников звонков и совещаний. Мы никогда не записываем ваш экран.",
+      "optional": "Необязательно"
     },
     "transcription": {
       "title": "Настройка транскрипции",
@@ -861,6 +864,7 @@
         "limitReached": "Лимит достигнут",
         "pastDue": "Просрочен",
         "pro": "Pro",
+        "business": "Business",
         "trial": "Пробный"
       },
       "billing": {
@@ -897,6 +901,7 @@
       "planLabels": {
         "free": "Бесплатный",
         "pro": "Pro",
+        "business": "Business",
         "trial": "Пробный"
       },
       "planTitle": "Тариф",
@@ -922,20 +927,18 @@
       },
       "pricing": {
         "title": "Тарифы",
-        "monthly": "Ежемесячно",
-        "annual": "Ежегодно",
-        "annualBadge": "Скидка 17%",
+        "billedYearly": "Годовая оплата",
         "free": {
-          "name": "Бесплатный",
+          "name": "Free",
           "price": "$0",
           "period": "навсегда",
           "features": [
-            "2 000 слов/неделя",
-            "Локальные модели ИИ",
-            "Свои API-ключи",
-            "Словарь и сниппеты",
-            "Поддержка 100+ языков",
-            "Без хранения данных"
+            "Up to 2,000 words/week",
+            "5 hours of meetings per month",
+            "Local AI models included",
+            "Bring your own API keys",
+            "Zero data retention",
+            "Community support"
           ]
         },
         "pro": {
@@ -944,29 +947,66 @@
           "monthlyPeriod": "/мес.",
           "annualPrice": "$80",
           "annualPeriod": "/год",
+          "annualEquivalent": "$6.67",
+          "includesPrefix": "Все функции Free +",
           "features": [
-            "Всё из Бесплатного",
-            "Безлимитное использование",
-            "Транскрипция в реальном времени",
-            "Новейшие аудио- и ИИ-модели",
-            "iOS/Android (скоро)",
-            "Без хранения данных",
-            "Приоритетная поддержка"
+            "Unlimited words per week",
+            "20 hours of meetings per month",
+            "Email support",
+            "Zero data retention"
+          ],
+          "cta": "Начать",
+          "switchToAnnual": "Перейти на годовой"
+        },
+        "business": {
+          "name": "Business",
+          "monthlyPrice": "$20",
+          "monthlyPeriod": "/мес.",
+          "annualPrice": "$200",
+          "annualPeriod": "/год",
+          "annualEquivalent": "$16.67",
+          "includesPrefix": "Все функции Pro +",
+          "badge": "Самый популярный",
+          "features": [
+            "Unlimited usage",
+            "Unlimited meeting recordings",
+            "Priority support",
+            "Zero data retention"
           ],
           "cta": "Начать",
           "switchToAnnual": "Перейти на годовой"
         },
         "enterprise": {
-          "name": "Корпоративный",
+          "name": "Enterprise",
           "price": "Индивидуально",
+          "subtitle": "Только годовая оплата",
+          "includesPrefix": "Все функции Business +",
           "features": [
-            "Облачная синхронизация",
-            "Командные функции (скоро)",
-            "SSO и соответствие требованиям"
+            "Managed API credits",
+            "Cloud sync across devices",
+            "Team features & admin",
+            "SSO & compliance"
           ],
           "cta": "Связаться с нами"
         },
-        "currentPlan": "Текущий тариф"
+        "currentPlan": "Текущий тариф",
+        "upgrade": "Улучшить план",
+        "downgrade": "Понизить план",
+        "planSwitched": "План успешно обновлён",
+        "confirmSwitch": {
+          "title": "Подтвердите смену плана",
+          "description": "Перейти на {{plan}} ({{interval}})",
+          "monthly": "ежемесячно",
+          "yearly": "ежегодно",
+          "chargeToday": "Списание сегодня",
+          "accountCredit": "Кредит на счёте",
+          "newPrice": "Новая цена",
+          "nextBilling": "Следующее списание",
+          "mo": "mo",
+          "yr": "yr",
+          "cancel": "Отмена",
+          "confirm": "Подтвердить"
+        }
       },
       "signedOutPlans": {
         "button": "Создать бесплатный аккаунт"
@@ -1232,7 +1272,7 @@
       "accessibilityDescription": "Необходимо для автоматической вставки после транскрипции",
       "accessibilityTitle": "Универсальный доступ",
       "description": "Проверяйте и управляйте системными разрешениями, необходимыми для работы OpenWhispr",
-      "microphoneDescription": "Необходимо для записи голоса и диктовки",
+      "microphoneDescription": "Записывает ваш голос для диктовки и транскрипции",
       "microphoneTitle": "Микрофон",
       "resetAccessibility": {
         "description": "OpenWhispr будет удалён из разрешений универсального доступа. Вам потребуется повторно предоставить доступ в Системные настройки > Конфиденциальность и безопасность > Универсальный доступ.",
@@ -1240,6 +1280,9 @@
         "rowDescription": "Исправьте проблемы после переустановки или пересборки приложения, удалив и повторно добавив OpenWhispr в системных настройках",
         "title": "Сбросить разрешения универсального доступа"
       },
+      "optional": "Необязательно",
+      "screenRecordingTitle": "Системное аудио",
+      "screenRecordingDescription": "Записывает аудио других участников звонков и совещаний",
       "test": "Тест",
       "testAndGrant": "Проверить и предоставить",
       "title": "Разрешения",
@@ -1461,8 +1504,7 @@
       "staleIndicator": "Содержимое изменилось после улучшения",
       "live": "Живой",
       "transcript": "Транскрипция",
-      "notes": "Заметки",
-      "generateNotes": "Сгенерировать заметки"
+      "notes": "Заметки"
     },
     "upload": {
       "title": "Загрузить аудио",
@@ -1539,9 +1581,9 @@
       "selectAction": "Выбрать действие",
       "done": "Готово",
       "builtin": {
-        "cleanupNotes": {
-          "name": "Очистить заметки",
-          "description": "Исправить грамматику, структуру и форматирование"
+        "generateNotes": {
+          "name": "Сгенерировать заметки",
+          "description": "Очистить, структурировать и улучшить заметки"
         }
       },
       "errors": {
@@ -1634,6 +1676,7 @@
     "trial": "Пробный период ({{days}} дн.)",
     "trial_other": "Пробный период ({{days}} дн.)",
     "pro": "Pro",
+    "business": "Business",
     "unlimitedTrial": "Без ограничений в пробный период",
     "unlimited": "Без ограничений",
     "manageSubscription": "Управление подпиской",
@@ -1764,7 +1807,10 @@
       "addAnother": "Добавить ещё один календарь",
       "disconnect": "Отключить",
       "disconnectConfirm": "Отключить {{email}}?",
-      "disconnectDescription": "Заметки встреч больше не будут записываться из этого календаря."
+      "disconnectDescription": "Заметки встреч больше не будут записываться из этого календаря.",
+      "screenRecordingRequired": "Требуется разрешение «Системное аудио»",
+      "screenRecordingDescription": "Для транскрипции встреч OpenWhispr нужно разрешение «Системное аудио» для записи звука других участников. Мы никогда не записываем ваш экран. Вы будете перенаправлены в Системные настройки для включения.",
+      "openSettings": "Открыть Системные настройки"
     },
     "plan": {
       "title": "Ваш план",
@@ -1797,6 +1843,8 @@
     "now": "Сейчас",
     "join": "Присоединиться",
     "untitledEvent": "Без названия",
+    "screenRecordingRequired": "Разрешение «Системное аудио» необходимо для записи звука других участников.",
+    "openSettings": "Открыть Системные настройки",
     "signInRequired": "Войдите, чтобы записывать встречи",
     "signInDescription": "Создайте аккаунт или войдите для записи и транскрипции встреч.",
     "connectCalendar": "Подключите календарь",

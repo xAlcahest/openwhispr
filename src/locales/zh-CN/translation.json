@@ -152,14 +152,17 @@
     "permissions": {
       "title": "权限",
       "microphoneTitle": "麦克风",
-      "microphoneDescription": "用于捕捉你的声音",
+      "microphoneDescription": "录制您的声音用于转录",
       "grant": "授权",
       "accessibilityTitle": "辅助功能",
       "accessibilityDescription": "在系统设置中开启此权限",
       "testAndGrant": "测试并授权",
       "requiredForApp": "OpenWhispr 运行所必需的权限",
       "microphoneRequired": "需要麦克风访问权限",
-      "openSystemSettings": "打开系统设置"
+      "openSystemSettings": "打开系统设置",
+      "screenRecordingTitle": "系统音频",
+      "screenRecordingDescription": "录制通话和会议中其他参与者的音频。我们绝不会录制您的屏幕。",
+      "optional": "可选"
     },
     "transcription": {
       "title": "转录设置",
@@ -861,6 +864,7 @@
         "limitReached": "已达上限",
         "pastDue": "逾期未付",
         "pro": "Pro",
+        "business": "Business",
         "trial": "试用"
       },
       "billing": {
@@ -897,6 +901,7 @@
       "planLabels": {
         "free": "免费版",
         "pro": "Pro",
+        "business": "Business",
         "trial": "试用"
       },
       "planTitle": "套餐",
@@ -922,20 +927,18 @@
       },
       "pricing": {
         "title": "套餐",
-        "monthly": "按月",
-        "annual": "按年",
-        "annualBadge": "省 17%",
+        "billedYearly": "按年计费",
         "free": {
-          "name": "免费版",
+          "name": "Free",
           "price": "$0",
           "period": "永久",
           "features": [
-            "每周 2,000 字",
-            "本地 AI 模型",
-            "自带 API Key",
-            "词典和片段",
-            "支持 100+ 种语言",
-            "零数据留存"
+            "Up to 2,000 words/week",
+            "5 hours of meetings per month",
+            "Local AI models included",
+            "Bring your own API keys",
+            "Zero data retention",
+            "Community support"
           ]
         },
         "pro": {
@@ -944,25 +947,66 @@
           "monthlyPeriod": "/月",
           "annualPrice": "$80",
           "annualPeriod": "/年",
+          "annualEquivalent": "$6.67",
+          "includesPrefix": "所有 Free 功能 +",
           "features": [
-            "包含免费版所有功能",
-            "无限使用",
-            "实时转录",
-            "最新音频和 AI 模型",
-            "iOS/Android（即将推出）",
-            "零数据留存",
-            "优先支持"
+            "Unlimited words per week",
+            "20 hours of meetings per month",
+            "Email support",
+            "Zero data retention"
+          ],
+          "cta": "开始使用",
+          "switchToAnnual": "切换为年付"
+        },
+        "business": {
+          "name": "Business",
+          "monthlyPrice": "$20",
+          "monthlyPeriod": "/月",
+          "annualPrice": "$200",
+          "annualPeriod": "/年",
+          "annualEquivalent": "$16.67",
+          "includesPrefix": "所有 Pro 功能 +",
+          "badge": "最受欢迎",
+          "features": [
+            "Unlimited usage",
+            "Unlimited meeting recordings",
+            "Priority support",
+            "Zero data retention"
           ],
           "cta": "开始使用",
           "switchToAnnual": "切换为年付"
         },
         "enterprise": {
-          "name": "企业版",
+          "name": "Enterprise",
           "price": "自定义",
-          "features": ["云端同步", "团队功能（即将推出）", "SSO 与合规"],
+          "subtitle": "仅限年付",
+          "includesPrefix": "所有 Business 功能 +",
+          "features": [
+            "Managed API credits",
+            "Cloud sync across devices",
+            "Team features & admin",
+            "SSO & compliance"
+          ],
           "cta": "联系我们"
         },
-        "currentPlan": "当前套餐"
+        "currentPlan": "当前套餐",
+        "upgrade": "升级",
+        "downgrade": "降级",
+        "planSwitched": "套餐已成功更新",
+        "confirmSwitch": {
+          "title": "确认更换套餐",
+          "description": "切换至 {{plan}}（{{interval}}）",
+          "monthly": "月付",
+          "yearly": "年付",
+          "chargeToday": "今日收费",
+          "accountCredit": "账户余额",
+          "newPrice": "新价格",
+          "nextBilling": "下次计费",
+          "mo": "mo",
+          "yr": "yr",
+          "cancel": "取消",
+          "confirm": "确认"
+        }
       },
       "signedOutPlans": {
         "button": "免费创建账户"
@@ -1228,7 +1272,7 @@
       "accessibilityDescription": "转录后自动粘贴需要此权限",
       "accessibilityTitle": "辅助功能",
       "description": "测试和管理 OpenWhispr 正常运行所需的系统权限",
-      "microphoneDescription": "语音录制和听写需要此权限",
+      "microphoneDescription": "录制您的声音用于听写和转录",
       "microphoneTitle": "麦克风",
       "resetAccessibility": {
         "description": "这将从辅助功能权限中移除 OpenWhispr。你需要在系统设置 > 隐私与安全 > 辅助功能中重新授权。",
@@ -1236,6 +1280,9 @@
         "rowDescription": "重新安装或重新构建应用后，通过在系统设置中移除并重新添加 OpenWhispr 来解决问题",
         "title": "重置辅助功能权限"
       },
+      "optional": "可选",
+      "screenRecordingTitle": "系统音频",
+      "screenRecordingDescription": "录制通话和会议中其他参与者的音频",
       "test": "测试",
       "testAndGrant": "测试并授权",
       "title": "权限",
@@ -1457,8 +1504,7 @@
       "staleIndicator": "内容在增强后已更改",
       "live": "实时",
       "transcript": "转录",
-      "notes": "笔记",
-      "generateNotes": "生成笔记"
+      "notes": "笔记"
     },
     "upload": {
       "title": "上传音频",
@@ -1535,9 +1581,9 @@
       "selectAction": "选择操作",
       "done": "完成",
       "builtin": {
-        "cleanupNotes": {
-          "name": "整理笔记",
-          "description": "修正语法、结构和格式"
+        "generateNotes": {
+          "name": "生成笔记",
+          "description": "清理、结构化和增强您的笔记"
         }
       },
       "errors": {
@@ -1630,6 +1676,7 @@
     "trial": "试用期（剩余 {{days}} 天）",
     "trial_other": "试用期（剩余 {{days}} 天）",
     "pro": "Pro",
+    "business": "Business",
     "unlimitedTrial": "试用期间无限转录",
     "unlimited": "无限转录",
     "manageSubscription": "管理订阅",
@@ -1760,7 +1807,10 @@
       "addAnother": "添加其他日历",
       "disconnect": "断开",
       "disconnectConfirm": "断开 {{email}}？",
-      "disconnectDescription": "将不再从此日历记录会议笔记。"
+      "disconnectDescription": "将不再从此日历记录会议笔记。",
+      "screenRecordingRequired": "需要系统音频权限",
+      "screenRecordingDescription": "要转录会议，OpenWhispr 需要系统音频权限来录制其他参与者的音频。我们绝不会录制您的屏幕。您将被引导至系统设置以启用此权限。",
+      "openSettings": "打开系统设置"
     },
     "plan": {
       "title": "您的方案",
@@ -1793,6 +1843,8 @@
     "now": "进行中",
     "join": "加入",
     "untitledEvent": "无标题事件",
+    "screenRecordingRequired": "需要系统音频权限来录制其他参与者的音频。",
+    "openSettings": "打开系统设置",
     "signInRequired": "登录以使用会议录制",
     "signInDescription": "创建账户或登录以录制和转录会议。",
     "connectCalendar": "连接您的日历",
