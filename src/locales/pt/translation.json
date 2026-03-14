@@ -1102,6 +1102,10 @@
         "resetToDefault": "Redefinir para {{hotkey}}",
         "title": "Atalho de ditado"
       },
+      "meetingHotkey": {
+        "title": "Hotkey modo reunião",
+        "description": "Iniciar manualmente o modo reunião e suprimir notificações automáticas"
+      },
       "microphone": {
         "description": "Selecione qual dispositivo de entrada usar para ditado",
         "title": "Microfone"

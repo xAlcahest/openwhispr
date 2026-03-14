@@ -1130,6 +1130,10 @@
         "resetToDefault": "Réinitialiser à {{hotkey}}",
         "title": "Raccourci de dictée"
       },
+      "meetingHotkey": {
+        "title": "Raccourci mode réunion",
+        "description": "Démarrer manuellement le mode réunion et supprimer les notifications automatiques"
+      },
       "microphone": {
         "description": "Sélectionnez le périphérique d'entrée à utiliser pour la dictée",
         "title": "Microphone"

@@ -1130,6 +1130,10 @@
         "resetToDefault": "重置为 {{hotkey}}",
         "title": "听写快捷键"
       },
+      "meetingHotkey": {
+        "title": "会议模式快捷键",
+        "description": "手动启动会议模式并抑制自动通知"
+      },
       "microphone": {
         "description": "选择用于听写的输入设备",
         "title": "麦克风"

@@ -743,6 +743,7 @@ declare global {
       // Windows Push-to-Talk notifications
       notifyActivationModeChanged?: (mode: "tap" | "push") => void;
       notifyHotkeyChanged?: (hotkey: string) => void;
+      notifyMeetingHotkeyChanged?: (hotkey: string) => void;
       notifyFloatingIconAutoHideChanged?: (enabled: boolean) => void;
       onFloatingIconAutoHideChanged?: (callback: (enabled: boolean) => void) => () => void;
       notifyStartMinimizedChanged?: (enabled: boolean) => void;
@@ -1177,6 +1178,8 @@ declare global {
         detectionId: string,
         action: string
       ) => Promise<{ success: boolean }>;
+      forceMeetingMode?: () => Promise<{ success: boolean }>;
+      endManualMeetingMode?: () => Promise<{ success: boolean }>;
       onNavigateToMeetingNote?: (
         callback: (data: { noteId: number; folderId: number; event: any }) => void
       ) => () => void;

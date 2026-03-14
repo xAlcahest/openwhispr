@@ -612,6 +612,35 @@ async function startApp() {
     }
   });
 
+  // Set up meeting mode hotkey
+  const meetingHotkeyCallback = () => {
+    if (hotkeyManager.isInListeningMode()) return;
+    if (meetingDetectionEngine?.isInManualMeetingMode()) {
+      debugLogger.info("Meeting hotkey pressed, ending manual meeting mode", {}, "meeting");
+      meetingDetectionEngine.endManualMeetingMode();
+    } else {
+      debugLogger.info("Meeting hotkey pressed, triggering force meeting mode", {}, "meeting");
+      meetingDetectionEngine?.forceMeetingMode();
+    }
+  };
+
+  const savedMeetingKey = environmentManager.getMeetingKey?.() || "Control+Shift+M";
+  debugLogger.info("Registering meeting hotkey", { hotkey: savedMeetingKey }, "meeting");
+  const meetingResult = hotkeyManager.registerSlot("meeting", savedMeetingKey, meetingHotkeyCallback);
+  debugLogger.info("Meeting hotkey registration result", { success: meetingResult.success, hotkey: savedMeetingKey }, "meeting");
+
+  ipcMain.on("meeting-hotkey-changed", (_event, hotkey) => {
+    debugLogger.info("Meeting hotkey changed", { hotkey }, "meeting");
+    if (hotkey) {
+      const result = hotkeyManager.registerSlot("meeting", hotkey, meetingHotkeyCallback);
+      debugLogger.info("Meeting hotkey re-registration result", { success: result.success, hotkey }, "meeting");
+      environmentManager.saveMeetingKey(hotkey);
+    } else {
+      hotkeyManager.unregisterSlot("meeting");
+      environmentManager.saveMeetingKey("");
+    }
+  });
+
   // Phase 2: Initialize remaining managers after windows are visible
   initializeDeferredManagers();
 

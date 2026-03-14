@@ -3915,6 +3915,24 @@ class IPCHandlers {
       this.windowManager?.showNotificationWindow();
     });
 
+    ipcMain.handle("force-meeting-mode", async () => {
+      try {
+        await this.meetingDetectionEngine.forceMeetingMode();
+        return { success: true };
+      } catch (error) {
+        return { success: false, error: error.message };
+      }
+    });
+
+    ipcMain.handle("end-manual-meeting-mode", async () => {
+      try {
+        this.meetingDetectionEngine.endManualMeetingMode();
+        return { success: true };
+      } catch (error) {
+        return { success: false, error: error.message };
+      }
+    });
+
     ipcMain.handle("get-desktop-sources", async (_event, types) => {
       try {
         const { desktopCapturer } = require("electron");

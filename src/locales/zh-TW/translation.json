@@ -1130,6 +1130,10 @@
         "resetToDefault": "重置為 {{hotkey}}",
         "title": "語音輸入快捷鍵"
       },
+      "meetingHotkey": {
+        "title": "會議模式快捷鍵",
+        "description": "手動啟動會議模式並抑制自動通知"
+      },
       "microphone": {
         "description": "選擇用於語音輸入的輸入裝置",
         "title": "麥克風"

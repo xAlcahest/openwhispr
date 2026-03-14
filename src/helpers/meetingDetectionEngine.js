@@ -19,6 +19,7 @@ class MeetingDetectionEngine {
     this.activeDetections = new Map();
     this.preferences = { processDetection: true, audioDetection: true };
     this._userRecording = false;
+    this._manualMeetingMode = false;
     this._notificationQueue = [];
     this._postRecordingCooldown = null;
     this._bindListeners();
@@ -52,6 +53,15 @@ class MeetingDetectionEngine {
 
     if (this.activeDetections.has(detectionId)) {
       debugLogger.debug("Detection already active, skipping", { detectionId }, "meeting");
+      return;
+    }
+
+    if (this._manualMeetingMode) {
+      debugLogger.info(
+        "Suppressing detection — manual meeting mode active",
+        { detectionId },
+        "meeting"
+      );
       return;
     }
 
@@ -199,6 +209,53 @@ class MeetingDetectionEngine {
     }
   }
 
+  async forceMeetingMode() {
+    if (this._manualMeetingMode) {
+      debugLogger.info("Already in manual meeting mode, ignoring", {}, "meeting");
+      return;
+    }
+
+    debugLogger.info("Force meeting mode triggered", {}, "meeting");
+    this._manualMeetingMode = true;
+
+    const event = {
+      id: `manual-${Date.now()}`,
+      calendar_id: "__manual__",
+      summary: "New note",
+      start_time: new Date().toISOString(),
+      end_time: new Date(Date.now() + 3600000).toISOString(),
+      is_all_day: 0,
+      status: "confirmed",
+      hangout_link: null,
+      conference_data: null,
+      organizer_email: null,
+      attendees_count: 0,
+    };
+
+    const noteResult = this.databaseManager.saveNote(event.summary, "", "meeting");
+    const meetingsFolder = this.databaseManager.getMeetingsFolder();
+
+    if (noteResult?.note?.id && meetingsFolder?.id) {
+      await this.windowManager.createControlPanelWindow();
+      this.windowManager.snapControlPanelToMeetingMode();
+      this.windowManager.sendToControlPanel("navigate-to-meeting-note", {
+        noteId: noteResult.note.id,
+        folderId: meetingsFolder.id,
+        event,
+      });
+    }
+  }
+
+  endManualMeetingMode() {
+    if (!this._manualMeetingMode) return;
+    debugLogger.info("Manual meeting mode ended", {}, "meeting");
+    this._manualMeetingMode = false;
+  }
+
+  isInManualMeetingMode() {
+    return this._manualMeetingMode;
+  }
+
   handleNotificationTimeout() {
     for (const [detectionId, detection] of this.activeDetections) {
       if (!detection.dismissed) {
@@ -306,6 +363,7 @@ class MeetingDetectionEngine {
     this.meetingProcessDetector.stop();
     this.audioActivityDetector.stop();
     this.activeDetections.clear();
+    this._manualMeetingMode = false;
     if (this._postRecordingCooldown) {
       clearTimeout(this._postRecordingCooldown);
       this._postRecordingCooldown = null;

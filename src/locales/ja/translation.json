@@ -1130,6 +1130,10 @@
         "resetToDefault": "{{hotkey}}にリセット",
         "title": "ディクテーションホットキー"
       },
+      "meetingHotkey": {
+        "title": "ミーティングモードホットキー",
+        "description": "ミーティングモードを手動で開始し、自動通知を抑制する"
+      },
       "microphone": {
         "description": "ディクテーションに使用する入力デバイスを選択",
         "title": "マイク"
