@@ -230,7 +230,7 @@ class IPCHandlers {
     if (gpus.length > 0) {
       debugLogger.info(
         "NVIDIA GPUs detected",
-        { count: gpus.length, devices: gpus.map((g) => `${g.name} (${g.vramMb}MB)`) },
+        { count: gpus.length, devices: gpus.map((g) => `[${g.index}] ${g.name} (${g.vramMb}MB) ${g.uuid}`) },
         "gpu"
       );
     } else {
@@ -1211,28 +1211,26 @@ class IPCHandlers {
       return listNvidiaGpus();
     });
 
-    ipcMain.handle("set-gpu-device-index", async (_event, purpose, index) => {
+    ipcMain.handle("set-gpu-device-index", async (_event, purpose, uuid) => {
       if (purpose !== "transcription" && purpose !== "intelligence") {
         return { success: false };
       }
-      const parsed = parseInt(index, 10);
-      if (isNaN(parsed) || parsed < 0) {
+      if (typeof uuid !== "string" || (!uuid.startsWith("GPU-") && uuid !== "")) {
         return { success: false };
       }
-      const idx = String(parsed);
-      const key = purpose === "intelligence" ? "INTELLIGENCE_GPU_INDEX" : "TRANSCRIPTION_GPU_INDEX";
-      const oldIdx = process.env[key] || "0";
-      process.env[key] = idx;
+      const key = purpose === "intelligence" ? "INTELLIGENCE_GPU_UUID" : "TRANSCRIPTION_GPU_UUID";
+      const oldUuid = process.env[key] || "";
+      process.env[key] = uuid;
       this.environmentManager.saveAllKeysToEnvFile().catch((err) => {
-        debugLogger.error("Failed to persist GPU index", { error: err.message }, "gpu");
+        debugLogger.error("Failed to persist GPU UUID", { error: err.message }, "gpu");
       });
 
-      if (oldIdx !== idx) {
+      if (oldUuid !== uuid) {
         try {
           if (purpose === "transcription" && this.whisperManager?.serverManager?.process) {
             debugLogger.info(
               "Restarting whisper-server for GPU change",
-              { from: oldIdx, to: idx },
+              { from: oldUuid, to: uuid },
               "gpu"
             );
             const modelName = this.whisperManager.currentServerModel;
@@ -1248,7 +1246,7 @@ class IPCHandlers {
             if (modelManager.serverManager?.process) {
               debugLogger.info(
                 "Restarting llama-server for GPU change",
-                { from: oldIdx, to: idx },
+                { from: oldUuid, to: uuid },
                 "gpu"
               );
               const modelPath = modelManager.serverManager.modelPath;
@@ -1272,10 +1270,10 @@ class IPCHandlers {
 
     ipcMain.handle("get-gpu-device-index", async (_event, purpose) => {
       if (purpose !== "transcription" && purpose !== "intelligence") {
-        return "0";
+        return "";
       }
-      const key = purpose === "intelligence" ? "INTELLIGENCE_GPU_INDEX" : "TRANSCRIPTION_GPU_INDEX";
-      return process.env[key] || "0";
+      const key = purpose === "intelligence" ? "INTELLIGENCE_GPU_UUID" : "TRANSCRIPTION_GPU_UUID";
+      return process.env[key] || "";
     });
 
     ipcMain.handle("get-cuda-whisper-status", async () => {
