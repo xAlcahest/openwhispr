@@ -559,45 +559,46 @@ class HotkeyManager {
     this.mainWindow = mainWindow;
     this.hotkeyCallback = callback;
 
-    // On XWayland, skip D-Bus shortcut managers — globalShortcut works via X11.
     const isXWayland = process.argv.includes("--ozone-platform=x11");
-    if (process.platform === "linux" && GnomeShortcutManager.isWayland() && !isXWayland) {
-      const gnomeOk = await this.initializeGnomeShortcuts(callback);
+    if (process.platform === "linux" && GnomeShortcutManager.isWayland()) {
+      if (!isXWayland) {
+        const gnomeOk = await this.initializeGnomeShortcuts(callback);
 
-      if (gnomeOk) {
-        const registerGnomeHotkey = async () => {
-          try {
-            const savedHotkey = await mainWindow.webContents.executeJavaScript(`
-              localStorage.getItem("dictationKey") || ""
-            `);
-            const hotkey = savedHotkey && savedHotkey.trim() !== "" ? savedHotkey : "Control+Super";
-            const gnomeHotkey = GnomeShortcutManager.convertToGnomeFormat(hotkey);
+        if (gnomeOk) {
+          const registerGnomeHotkey = async () => {
+            try {
+              const savedHotkey = await mainWindow.webContents.executeJavaScript(`
+                localStorage.getItem("dictationKey") || ""
+              `);
+              const hotkey =
+                savedHotkey && savedHotkey.trim() !== "" ? savedHotkey : "Control+Super";
+              const gnomeHotkey = GnomeShortcutManager.convertToGnomeFormat(hotkey);
 
-            const success = await this.gnomeManager.registerKeybinding(gnomeHotkey);
-            if (success) {
-              this.currentHotkey = hotkey;
-              debugLogger.log(`[HotkeyManager] GNOME hotkey "${hotkey}" registered successfully`);
-            } else {
-              debugLogger.log("[HotkeyManager] GNOME keybinding failed, falling back to X11");
+              const success = await this.gnomeManager.registerKeybinding(gnomeHotkey);
+              if (success) {
+                this.currentHotkey = hotkey;
+                debugLogger.log(`[HotkeyManager] GNOME hotkey "${hotkey}" registered successfully`);
+              } else {
+                debugLogger.log("[HotkeyManager] GNOME keybinding failed, falling back to X11");
+                this.useGnome = false;
+                this.loadSavedHotkeyOrDefault(mainWindow, callback);
+              }
+            } catch (err) {
+              debugLogger.log(
+                "[HotkeyManager] GNOME keybinding failed, falling back to X11:",
+                err.message
+              );
               this.useGnome = false;
               this.loadSavedHotkeyOrDefault(mainWindow, callback);
             }
-          } catch (err) {
-            debugLogger.log(
-              "[HotkeyManager] GNOME keybinding failed, falling back to X11:",
-              err.message
-            );
-            this.useGnome = false;
-            this.loadSavedHotkeyOrDefault(mainWindow, callback);
-          }
-        };
+          };
 
-        setTimeout(registerGnomeHotkey, HOTKEY_REGISTRATION_DELAY_MS);
-        this.isInitialized = true;
-        return;
+          setTimeout(registerGnomeHotkey, HOTKEY_REGISTRATION_DELAY_MS);
+          this.isInitialized = true;
+          return;
+        }
       }
 
-      // Try KDE native shortcuts via KGlobalAccel
       const kdeOk = await this.initializeKDEShortcuts(callback);
 
       if (kdeOk) {
@@ -637,43 +638,45 @@ class HotkeyManager {
         return;
       }
 
-      // Try Hyprland native shortcuts if GNOME/KDE paths were not applicable
-      const hyprlandOk = await this.initializeHyprlandShortcuts(callback);
+      if (!isXWayland) {
+        const hyprlandOk = await this.initializeHyprlandShortcuts(callback);
 
-      if (hyprlandOk) {
-        const registerHyprlandHotkey = async () => {
-          try {
-            const savedHotkey = await mainWindow.webContents.executeJavaScript(`
-              localStorage.getItem("dictationKey") || ""
-            `);
-            const hotkey = savedHotkey && savedHotkey.trim() !== "" ? savedHotkey : "Control+Super";
+        if (hyprlandOk) {
+          const registerHyprlandHotkey = async () => {
+            try {
+              const savedHotkey = await mainWindow.webContents.executeJavaScript(`
+                localStorage.getItem("dictationKey") || ""
+              `);
+              const hotkey =
+                savedHotkey && savedHotkey.trim() !== "" ? savedHotkey : "Control+Super";
 
-            const success = await this.hyprlandManager.registerKeybinding(hotkey);
-            if (success) {
-              this.currentHotkey = hotkey;
+              const success = await this.hyprlandManager.registerKeybinding(hotkey);
+              if (success) {
+                this.currentHotkey = hotkey;
+                debugLogger.log(
+                  `[HotkeyManager] Hyprland hotkey "${hotkey}" registered successfully`
+                );
+              } else {
+                debugLogger.log(
+                  "[HotkeyManager] Hyprland keybinding failed, falling back to globalShortcut"
+                );
+                this.useHyprland = false;
+                this.loadSavedHotkeyOrDefault(mainWindow, callback);
+              }
+            } catch (err) {
               debugLogger.log(
-                `[HotkeyManager] Hyprland hotkey "${hotkey}" registered successfully`
-              );
-            } else {
-              debugLogger.log(
-                "[HotkeyManager] Hyprland keybinding failed, falling back to globalShortcut"
+                "[HotkeyManager] Hyprland keybinding failed, falling back to globalShortcut:",
+                err.message
               );
               this.useHyprland = false;
               this.loadSavedHotkeyOrDefault(mainWindow, callback);
             }
-          } catch (err) {
-            debugLogger.log(
-              "[HotkeyManager] Hyprland keybinding failed, falling back to globalShortcut:",
-              err.message
-            );
-            this.useHyprland = false;
-            this.loadSavedHotkeyOrDefault(mainWindow, callback);
-          }
-        };
+          };
 
-        setTimeout(registerHyprlandHotkey, HOTKEY_REGISTRATION_DELAY_MS);
-        this.isInitialized = true;
-        return;
+          setTimeout(registerHyprlandHotkey, HOTKEY_REGISTRATION_DELAY_MS);
+          this.isInitialized = true;
+          return;
+        }
       }
     }
 
