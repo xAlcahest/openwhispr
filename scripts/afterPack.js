@@ -103,7 +103,7 @@ FLAGS=()
 
 # Wayland: forces XWayland (overlay positioning requires X11)
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-  desktop=$(echo "${XDG_CURRENT_DESKTOP:-}" | tr '[:upper:]' '[:lower:]')
+  desktop=$(echo "\${XDG_CURRENT_DESKTOP:-}" | tr '[:upper:]' '[:lower:]')
   case "$desktop" in *kde*) FLAGS+=(--ozone-platform=x11) ;; esac
 fi
 
