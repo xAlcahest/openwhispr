@@ -1623,6 +1623,14 @@ class IPCHandlers {
             debugLogger.warn("[IPC] Failed to unregister Hyprland keybinding:", err.message);
           });
         }
+
+        // On KDE Wayland, unregister the keybinding during capture
+        if (hotkeyManager.isUsingKDE() && hotkeyManager.kdeManager) {
+          debugLogger.log("[IPC] Unregistering KDE keybinding for hotkey capture mode");
+          await hotkeyManager.kdeManager.unregisterKeybinding().catch((err) => {
+            debugLogger.warn("[IPC] Failed to unregister KDE keybinding:", err.message);
+          });
+        }
       } else {
         // Exiting capture mode - re-register globalShortcut if not already registered
         if (effectiveHotkey && !usesNativeListener(effectiveHotkey)) {
@@ -1681,6 +1689,18 @@ class IPCHandlers {
             `[IPC] Re-registering Hyprland keybinding "${effectiveHotkey}" after capture mode`
           );
           const success = await hotkeyManager.hyprlandManager.registerKeybinding(effectiveHotkey);
+          if (success) {
+            hotkeyManager.currentHotkey = effectiveHotkey;
+          }
+        }
+
+        // On KDE Wayland, re-register the keybinding with the effective hotkey
+        if (hotkeyManager.isUsingKDE() && hotkeyManager.kdeManager && effectiveHotkey) {
+          debugLogger.log(
+            `[IPC] Re-registering KDE keybinding "${effectiveHotkey}" after capture mode`
+          );
+          const callback = hotkeyManager.hotkeyCallback;
+          const success = await hotkeyManager.kdeManager.registerKeybinding(effectiveHotkey, "dictation", callback);
           if (success) {
             hotkeyManager.currentHotkey = effectiveHotkey;
           }

@@ -25,7 +25,7 @@ console.log("[run-electron] Electron path:", electronPath);
 console.log("[run-electron] App dir:", appDir);
 console.log("[run-electron] Args:", args);
 
-// On KDE/GNOME Wayland, force XWayland so globalShortcut and window positioning work.
+// On KDE Wayland, force XWayland so globalShortcut and window positioning work.
 // Adding it here avoids the self-relaunch in main.js which kills concurrently in dev mode.
 if (
   process.platform === "linux" &&
@@ -33,9 +33,9 @@ if (
   !args.includes("--ozone-platform=x11")
 ) {
   const desktop = (process.env.XDG_CURRENT_DESKTOP || "").toLowerCase();
-  if (desktop.includes("kde") || /gnome|ubuntu|unity/.test(desktop)) {
+  if (desktop.includes("kde")) {
     args.push("--ozone-platform=x11");
-    console.log("[run-electron] KDE/GNOME Wayland detected, forcing XWayland");
+    console.log("[run-electron] KDE Wayland detected, forcing XWayland");
   }
 }
 
